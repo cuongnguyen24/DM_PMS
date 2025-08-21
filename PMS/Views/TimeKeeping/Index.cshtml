@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ CHẤM CÔNG";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- Bộ lọc -->
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label style="font-weight:bold">Chọn năm:</label>                        
+                    </div>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="selectYear">
+                            @for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 1; i++)
+                            {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                <option value="@i" selected="@selected">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Loại công:</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiCong" value="thoi_gian" checked>
+                            <label class="form-check-label">Thời gian</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiCong" value="ca_dem">
+                            <label class="form-check-label">Ca đêm</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiCong" value="them_gio">
+                            <label class="form-check-label">Thêm giờ</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <!-- Kết quả load AJAX -->
+                <div class="table-responsive" id="bangKetQua">
+                    @Html.Partial("_TimeTable") <!-- mặc định là thời gian -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function loadBangChamCong() {
+                var loai = $('input[name="loaiCong"]:checked').val();
+                var nam = $('#selectYear').val();
+
+                $.ajax({
+                    url: '/TimeKeeping/RenderLoaiCong',
+                    type: 'GET',
+                    data: { loai: loai, nam: nam },
+                    success: function (data) {
+                        $('#bangKetQua').html(data);
+                    },
+                    error: function () {
+                        alert("Lỗi khi tải dữ liệu.");
+                    }
+                });
+            }
+
+            // Khi ấn nút "Tìm kiếm"
+            $('#btnTimKiem').click(function () {
+                loadBangChamCong();
+            });
+
+            // ✅ Khi chọn radio "loaiCong" → tự động gọi
+            $('input[name="loaiCong"]').change(function () {
+                loadBangChamCong();
+            });
+
+            // ✅ (tuỳ chọn) Khi thay đổi năm cũng tự động gọi
+            $('#selectYear').change(function () {
+                loadBangChamCong();
+            });
+        });
+    </script>
+}
+

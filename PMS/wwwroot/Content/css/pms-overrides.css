@@ -1,0 +1,13 @@
+/* Raise sidebar above Handsontable overlays and prevent clipping */
+.left-sidebar { z-index: 10010; overflow: visible; }
+.scroll-sidebar { overflow: visible; }
+.sidebar-nav #sidebarnav > li > a { position: relative; overflow: visible; }
+.sidebar-nav #sidebarnav > li > a .hide-menu { position: relative; z-index: 10011; }
+
+/* Keep topbar (logo area) above sidebar */
+.topbar { z-index: 10020; }
+
+/* Disable ripple effect on sidebar menu links */
+.sidebar-nav .waves-effect .waves-ripple { display: none !important; }
+
+

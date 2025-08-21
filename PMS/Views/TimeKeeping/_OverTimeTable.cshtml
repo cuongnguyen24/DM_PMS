@@ -1,0 +1,147 @@
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="simpleTimekeeping" style="overflow:hidden;">
+    <div id="hotContainer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+    <script>
+        (function () {
+            const container = document.getElementById('hotContainer');
+
+            // Tạo header con cho mỗi tháng: "giờ" và "công"
+            const months = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
+            const nestedHeaders = [
+                [
+                    'Số TT', 'Họ và tên',
+                    ...months.flatMap(m => [m, '']), // 2 cột mỗi tháng
+                    'Tổng hợp cả năm', ''
+                ],
+                [
+                    '', '',
+                    ...Array(12).fill(['giờ', 'công']).flat(),
+                    'giờ', 'công'
+                ]
+            ];
+
+            // Cấu hình cột:
+            // 0: STT (numeric)
+            // 1: Họ và tên (text)
+            // 2..25: 12 tháng * 2 cột (numeric)
+            // 26,27: tổng giờ và tổng công (readonly)
+            const columns = [
+                { data: 0, type: 'numeric', width: 50 }, // STT
+                { data: 1, type: 'text', width: 250 },   // Họ và tên
+            ];
+
+            for (let i = 0; i < 24; i++) { // 12 tháng * 2 cột
+                columns.push({
+                    data: 2 + i,
+                    type: 'numeric',
+                    numericFormat: { pattern: '0.00' },
+                    allowInvalid: false,
+                    width: 60
+                });
+            }
+
+            columns.push({ data: 26, type: 'numeric', readOnly: true, width: 80 }); // Tổng giờ
+            columns.push({ data: 27, type: 'numeric', readOnly: true, width: 80 }); // Tổng công
+
+            // Tạo dòng nhóm (in nghiêng, màu xanh)
+            function makeGroupRow(label) {
+                const row = new Array(28).fill('');
+                row[1] = label;
+                return row;
+            }
+
+            // Tạo dòng nhân viên
+            function makeEmployeeRow(index, name) {
+                const row = new Array(28).fill('');
+                row[0] = index;
+                row[1] = name;
+                return row;
+            }
+
+            // Dữ liệu mẫu
+            const data = [
+                makeGroupRow('Người Quản lý'),
+                makeEmployeeRow(1, 'Nguyễn 111'),
+                makeEmployeeRow(2, 'Nguyễn 112'),
+                makeEmployeeRow(3, 'Nguyễn 113'),
+                makeEmployeeRow(4, 'Nguyễn 114'),
+                makeEmployeeRow(5, 'Nguyễn 115'),
+                makeEmployeeRow(6, 'Nguyễn 116'),
+                makeEmployeeRow(7, 'Nguyễn 117'),
+
+                makeGroupRow('Phòng Tổng hợp HĐTV'),
+                makeEmployeeRow(1, 'Nguyễn 118'),
+                makeEmployeeRow(2, 'Nguyễn 119'),
+                makeEmployeeRow(3, 'Nguyễn 120'),
+            ];
+
+            const hot = new Handsontable(container, {
+                data: data,
+                columns: columns,
+                nestedHeaders: nestedHeaders,
+                colHeaders: false,
+                rowHeaders: true,
+                fixedColumnsLeft: 2, // cố định 2 cột STT + Họ tên
+                manualColumnMove: true,
+                manualColumnFreeze: true,
+                height: calculateHotHeight(),
+                width: '100%',
+                rowHeaderWidth: 50,
+                filters: true,
+                dropdownMenu: true,
+                licenseKey: 'non-commercial-and-evaluation',
+
+                // Tô style cho dòng nhóm
+                cells: function (row, col) {
+                    const cellProperties = {};
+                    const dataAtRow = this.instance.getDataAtRow(row);
+                    // Nếu dòng là dòng nhóm (chỉ có cột 1 có chữ)
+                    if (dataAtRow[1] && dataAtRow[0] === '') {
+                        cellProperties.readOnly = true;
+                        cellProperties.renderer = function (instance, td, row, col, prop, value, cellProperties) {
+                            td.style.fontStyle = 'italic';
+                            td.style.color = 'blue';
+                            td.style.fontWeight = 'bold';
+                            td.style.background = '#f0f8ff';
+                            td.innerHTML = value;
+                        };
+                    }
+                    return cellProperties;
+                },
+
+                afterChange: function (changes, source) {
+                    if (!changes) return;
+                    changes.forEach(([row, prop, oldVal, newVal]) => {
+                        // Tính tổng giờ và tổng công cho mỗi nhân viên
+                        if (typeof prop === 'number' && prop >= 2 && prop <= 25) {
+                            const rowData = this.getDataAtRow(row);
+                            let totalHours = 0, totalCong = 0;
+                            for (let i = 2; i <= 25; i += 2) {
+                                totalHours += parseFloat(rowData[i]) || 0;
+                                totalCong += parseFloat(rowData[i + 1]) || 0;
+                            }
+                            this.setDataAtCell(row, 26, totalHours);
+                            this.setDataAtCell(row, 27, totalCong);
+                        }
+                    });
+                }
+            });
+
+            // Hàm tính chiều cao phù hợp
+            function calculateHotHeight() {
+                const windowHeight = window.innerHeight;
+                const offset = 360; // Trừ phần header, filter, padding, navbar, ...
+                const calculated = windowHeight - offset;
+                return Math.max(calculated, 320); // Tối thiểu 320px
+            }
+
+            // Tự động resize khi thay đổi kích thước cửa sổ
+            window.addEventListener('resize', () => {
+                const newHeight = calculateHotHeight();
+                hot.updateSettings({ height: newHeight });
+            });
+
+        })();
+    </script>
+</div>

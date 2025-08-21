@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ PHỤ TRỢ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" style="margin-bottom:0px;">BẢNG PHỤ TRỢ</h4>
+
+                <!-- Bộ lọc -->
+                <div class="row mt-3 mb-3">
+                    <div class="col-md-2">
+                        <label>Chọn thời gian:</label>
+                        <select class="form-control" id="selectQuarter">
+                            <option value="1">Quý I</option>
+                            <option value="2">Quý II</option>
+                            <option value="3">Quý III</option>
+                            <option value="4">Quý IV</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Chọn năm:</label>
+                        <select class="form-control" id="selectYear">
+                            @for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 1; i++)
+                            {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                <option value="@i" selected="@selected">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Loại phụ trợ:</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiPhuTro" value="dien_thoai" checked>
+                            <label class="form-check-label">Điện thoại</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiPhuTro" value="cong_doan_phi">
+                            <label class="form-check-label">Công đoàn phí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiPhuTro" value="thue_thu_nhap_ca_nhan">
+                            <label class="form-check-label">Thuế thu nhập cá nhân</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <!-- Kết quả load AJAX -->
+                <div class="table-responsive" id="bangKetQua">
+                    @Html.Partial("_PhoneTable") <!-- mặc định là điện thoại -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function loadBangLoaiPhuTro() {
+                var loai = $('input[name="loaiPhuTro"]:checked').val();
+                var nam = $('#selectYear').val();
+
+                $.ajax({
+                    url: '/AllowancesManagement/RenderLoaiPhuTro',
+                    type: 'GET',
+                    data: { loai: loai, nam: nam },
+                    success: function (data) {
+                        $('#bangKetQua').html(data);
+                    },
+                    error: function () {
+                        alert("Lỗi khi tải dữ liệu.");
+                    }
+                });
+            }
+
+            // Khi ấn nút "Tìm kiếm"
+            $('#btnTimKiem').click(function () {
+                loadBangLoaiPhuTro();
+            });
+
+            // Khi chọn radio "loaiPhuTro" → tự động gọi
+            $('input[name="loaiPhuTro"]').change(function () {
+                loadBangLoaiPhuTro();
+            });
+
+            // Khi thay đổi năm cũng tự động gọi
+            $('#selectYear').change(function () {
+                loadBangLoaiPhuTro();
+            });
+        });
+    </script>
+}

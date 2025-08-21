@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ CHI LƯƠNG";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" style="margin-bottom:0px;">DANH SÁCH QUYẾT TOÁN LƯƠNG CHẾ ĐỘ THÁNG 09/2025</h4>
+
+                <!-- Bộ lọc -->
+                <div class="row mt-3 mb-3">
+                    <div class="col-md-2">
+                        <label>Chọn thời gian:</label>
+                        <select class="form-control" id="selectQuarter">
+                            <option value="1">Tháng 1</option>
+                            <option value="2">Tháng 2</option>
+                            <option value="3">Tháng 3</option>
+                            <option value="4">...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Chọn năm:</label>
+                        <select class="form-control" id="selectYear">
+                            @for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 1; i++)
+                            {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                <option value="@i" selected="@selected">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Chọn đối tượng:</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiDoiTuong" value="NQL" checked>
+                            <label class="form-check-label">NQL</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="loaiDoiTuong" value="NLD">
+                            <label class="form-check-label">NLĐ</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnXuatExcel" class="btn btn-primary">Xuất Excel</button>
+                    </div>
+                </div>
+
+                <!-- Kết quả load AJAX -->
+                <div class="table-responsive" id="bangKetQua">
+                    @Html.Partial("_ManagerTable") <!-- mặc định là NQL -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function loadBangLoaiDoiTuong() {
+                var loai = $('input[name="loaiDoiTuong"]:checked').val();
+                var nam = $('#selectYear').val();
+
+                $.ajax({
+                    url: '/SalaryPayment/RenderLoaiDoiTuong',
+                    type: 'GET',
+                    data: { loai: loai, nam: nam },
+                    success: function (data) {
+                        $('#bangKetQua').html(data);
+                    },
+                    error: function () {
+                        alert("Lỗi khi tải dữ liệu.");
+                    }
+                });
+            }
+
+            // Khi ấn nút "Tìm kiếm"
+            $('#btnTimKiem').click(function () {
+                loadBangLoaiDoiTuong();
+            });
+
+            // Khi chọn radio "loaiPhuTro" → tự động gọi
+            $('input[name="loaiDoiTuong"]').change(function () {
+                loadBangLoaiDoiTuong();
+            });
+
+            // Khi thay đổi năm cũng tự động gọi
+            $('#selectYear').change(function () {
+                loadBangLoaiDoiTuong();
+            });
+        });
+    </script>
+}

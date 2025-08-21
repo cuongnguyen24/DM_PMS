@@ -1,0 +1,192 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ AN TOÀN ĐIỆN";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">BẢNG TỔNG HỢP HỆ SỐ AN TOÀN ĐIỆN QUÝ I/2025</h4>
+
+                <!-- Bộ lọc -->
+                <div class="row mt-3 mb-3">
+                    <div class="col-md-2">
+                        <label>Chọn thời gian:</label>
+                        <select class="form-control" id="selectQuarter">
+                            <option value="1">Quý I</option>
+                            <option value="2">Quý II</option>
+                            <option value="3">Quý III</option>
+                            <option value="4">Quý IV</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Chọn năm:</label>
+                        <select class="form-control" id="selectYear">
+                            @for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 1; i++)
+                            {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                <option value="@i" selected="@selected">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Chọn phòng ban:</label>
+                        <select class="form-control" id="selectPhongBan">
+                            <option value="">-- Tất cả --</option>
+                            <option value="PQL">Người Quản lý</option>
+                            <option value="HDT">Phòng Tổng hợp HDTT</option>
+                            <!-- Add more if needed -->
+                        </select>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <!-- Bảng Handsontable -->
+                <div class="table-responsive" id="timekeepingHotWrapper" style="overflow:auto;">
+                    <div id="timekeepingHot"></div>
+                    <div class="text-muted mt-2">
+                        Ghi chú: Kcvi(?), Knqi(?), Ki(?)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById('timekeepingHot');
+
+        const monthLabels = Array.from({ length: 12 }, (_, i) => `Tháng ${i + 1}`);
+        const subColumns = ['ATĐ', 'Kcvi', 'Knqi', 'Ki'];
+
+        // Nested headers - 3 levels
+        const nestedHeaders = [
+            ['STT', 'Họ và tên', 'Số TK', ...monthLabels.map(m => ({ label: m, colspan: 4 })), { label: 'Tổng', colspan: 1 }],
+            ['', '', '', ...monthLabels.flatMap(() => ['Số ngày công được thưởng ATĐ', { label: 'Hệ số đánh giá', colspan: 3 }]), ''],
+            ['', '', '', ...monthLabels.flatMap(() => ['', 'Kcvi', 'Knqi', 'Ki']), '']
+        ];
+
+
+        const baseColumnCount = 3;
+        const totalMonthCols = monthLabels.length * subColumns.length;
+        const totalColCount = baseColumnCount + totalMonthCols + 1;
+
+        const columns = [];
+
+        // Base columns
+        columns.push({ data: 0, type: 'numeric', width: 60 });
+        columns.push({ data: 1, type: 'text', width: 180 });
+        columns.push({ data: 2, type: 'text', width: 80 });
+
+        // Monthly columns
+        for (let i = 0; i < totalMonthCols; i++) {
+            columns.push({
+                data: baseColumnCount + i,
+                type: 'numeric',
+                numericFormat: { pattern: '0.0' },
+                allowInvalid: false,
+                width: 55
+            });
+        }
+
+        // Tổng cuối
+        columns.push({ data: totalColCount - 1, type: 'numeric', readOnly: true, width: 80 });
+
+        // Sample row
+        function makeRow(index, fullName, account) {
+            const row = new Array(totalColCount).fill('');
+            row[0] = index;
+            row[1] = fullName;
+            row[2] = account;
+
+            for (let m = 0; m < monthLabels.length; m++) {
+                const offset = baseColumnCount + m * subColumns.length;
+                row[offset + 0] = 22;  // ATĐ
+                row[offset + 1] = 0.7; // Kcvi
+                row[offset + 2] = 0.3; // Knqi
+                row[offset + 3] = 1.0; // Ki
+            }
+
+            row[totalColCount - 1] = 12.0; // Tổng Ki
+            return row;
+        }
+
+        const data = [
+            makeRow(1, 'Nguyễn 111', 'zzz'),
+            makeRow(2, 'Nguyễn 112', 'zzz'),
+            makeRow(3, 'Nguyễn 113', 'zzz'),
+            makeRow(4, 'Nguyễn 114', 'zzz'),
+            makeRow(5, 'Nguyễn 115', 'zzz'),
+            makeRow(6, 'Nguyễn 116', 'zzz'),
+            makeRow(7, 'Nguyễn 117', 'zzz'),
+            makeRow(8, 'Nguyễn 118', 'zzz'),
+            makeRow(9, 'Nguyễn 119', 'zzz'),
+            makeRow(10, 'Nguyễn 120', 'zzz'),
+            makeRow(8, 'Nguyễn 118', 'zzz'),
+            makeRow(9, 'Nguyễn 119', 'zzz'),
+            makeRow(8, 'Nguyễn 118', 'zzz'),
+            makeRow(9, 'Nguyễn 119', 'zzz')
+        ];
+
+        const hot = new Handsontable(container, {
+            data: data,
+            columns: columns,
+            nestedHeaders: nestedHeaders,
+            colHeaders: false,
+            rowHeaders: true,
+            height: calculateHotHeight(),
+            width: '100%',
+            stretchH: 'all',
+            manualColumnFreeze: true,
+            manualColumnMove: true,
+            fixedColumnsLeft: 3,
+            contextMenu: {
+                items: {
+                    row_above: {},
+                    row_below: {},
+                    hsep1: '---------',
+                    freeze_column: { name: 'Cố định cột' },
+                    unfreeze_column: { name: 'Bỏ cố định cột' },
+                    hsep2: '---------',
+                    undo: {},
+                    redo: {},
+                    clear_custom: {
+                        name: 'Xóa nội dung các ô đã chọn',
+                        callback() {
+                            hot.emptySelectedCells();
+                        }
+                    }
+                }
+            },
+            filters: true,
+            dropdownMenu: true,
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+
+        // Nút tìm kiếm giả lập
+        document.getElementById('btnTimKiem').addEventListener('click', () => {
+            alert('Tìm kiếm theo quý, năm, phòng ban chưa kết nối dữ liệu thực.');
+        });
+
+        // Hàm tính chiều cao phù hợp
+        function calculateHotHeight() {
+            const windowHeight = window.innerHeight;
+            const offset = 360; // Trừ phần header, filter, padding, navbar, ...
+            const calculated = windowHeight - offset;
+            return Math.max(calculated, 320); // Tối thiểu 320px
+        }
+
+        // Tự động resize khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            const newHeight = calculateHotHeight();
+            hot.updateSettings({ height: newHeight });
+        });
+    });
+</script>

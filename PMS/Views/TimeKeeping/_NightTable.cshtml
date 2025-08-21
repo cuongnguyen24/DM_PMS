@@ -1,0 +1,133 @@
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="simpleTimekeeping" style="overflow:hidden;">
+    <div id="hotContainer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+    <script>
+        (function () {
+            const container = document.getElementById('hotContainer');
+
+            const monthLabels = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
+            const columns = [];
+
+            // Cấu hình cột
+            columns.push({ data: 0, type: 'numeric', width: 50 });  // STT
+            columns.push({ data: 1, type: 'text', width: 250 });     // Họ và tên
+            for (let i = 0; i < 12; i++) {
+                columns.push({
+                    data: 2 + i,
+                    type: 'numeric',
+                    numericFormat: { pattern: '0' },
+                    allowInvalid: false,
+                    width: 50
+                });
+            }
+            columns.push({
+                data: 14,
+                type: 'numeric',
+                readOnly: true,
+                width: 80
+            }); // Tổng cả năm
+
+            const nestedHeaders = [
+                ['Số TT', 'Họ và tên', ...monthLabels, 'TỔNG HỢP CẢ NĂM']
+            ];
+
+            // Hàm tạo dòng nhóm (ví dụ: "Người Quản lý")
+            function makeGroupRow(label) {
+                const row = new Array(15).fill('');
+                row[1] = label;
+                return row;
+            }
+
+            // Hàm tạo dòng nhân viên
+            function makeEmployeeRow(index, name) {
+                const row = new Array(15).fill('');
+                row[0] = index;
+                row[1] = name;
+                return row;
+            }
+
+            const data = [
+                makeGroupRow('Người Quản lý'),
+                makeEmployeeRow(1, 'Nguyễn 111'),
+                makeEmployeeRow(2, 'Nguyễn 112'),
+                makeEmployeeRow(3, 'Nguyễn 113'),
+                makeEmployeeRow(4, 'Nguyễn 114'),
+                makeEmployeeRow(5, 'Nguyễn 115'),
+                makeEmployeeRow(6, 'Nguyễn 116'),
+                makeEmployeeRow(7, 'Nguyễn 117'),
+
+                makeGroupRow('Phòng Tổng hợp HĐTV'),
+                makeEmployeeRow(1, 'Nguyễn 118'),
+                makeEmployeeRow(2, 'Nguyễn 119'),
+                makeEmployeeRow(3, 'Nguyễn 120'),
+            ];
+
+            const hot = new Handsontable(container, {
+                data: data,
+                columns: columns,
+                colHeaders: false,
+                rowHeaders: true,
+                nestedHeaders: nestedHeaders,
+                height: calculateHotHeight(),
+                width: '100%',
+                manualColumnFreeze: true,
+                manualColumnMove: true,
+                fixedColumnsLeft: 2,
+                rowHeaderWidth: 50,
+                contextMenu: {
+                    items: {
+                        row_above: {},
+                        row_below: {},
+                        hsep1: '---------',
+                        freeze_column: { name: 'Cố định cột' },
+                        unfreeze_column: { name: 'Bỏ cố định cột' },
+                        hsep2: '---------',
+                        undo: {},
+                        redo: {},
+                        clear_custom: {
+                            name: 'Xóa nội dung các ô đã chọn',
+                            callback() { hot.emptySelectedCells(); }
+                        }
+                    }
+                },
+                filters: true,
+                dropdownMenu: true,
+                licenseKey: 'non-commercial-and-evaluation',
+
+                // Tô style cho dòng nhóm
+                cells: function (row, col) {
+                    const cellProperties = {};
+                    const dataAtRow = this.instance.getDataAtRow(row);
+                    // Nếu dòng là dòng nhóm (chỉ có cột 1 có chữ)
+                    if (dataAtRow[1] && dataAtRow[0] === '') {
+                        cellProperties.readOnly = true;
+                        cellProperties.renderer = function (instance, td, row, col, prop, value, cellProperties) {
+                            td.style.fontStyle = 'italic';
+                            td.style.color = 'blue';
+                            td.style.fontWeight = 'bold';
+                            td.style.background = '#f0f8ff';
+                            td.innerHTML = value;
+                        };
+                    }
+                    return cellProperties;
+                },
+            });
+
+            // Hàm tính chiều cao phù hợp
+            function calculateHotHeight() {
+                const windowHeight = window.innerHeight;
+                const offset = 360; // Trừ phần header, filter, padding, navbar, ...
+                const calculated = windowHeight - offset;
+                return Math.max(calculated, 320); // Tối thiểu 320px
+            }
+
+            // Tự động resize khi thay đổi kích thước cửa sổ
+            window.addEventListener('resize', () => {
+                const newHeight = calculateHotHeight();
+                hot.updateSettings({ height: newHeight });
+            });
+
+        })();
+    </script>
+</div>

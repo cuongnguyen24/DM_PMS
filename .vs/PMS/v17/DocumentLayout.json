@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\PMS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\wwwroot\\content\\css\\pms-overrides.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\wwwroot\\content\\css\\pms-overrides.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\views\\timeoff\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timeoff\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "pms-overrides.css",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\wwwroot\\Content\\css\\pms-overrides.css",
+              "RelativeDocumentMoniker": "PMS\\wwwroot\\Content\\css\\pms-overrides.css",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\wwwroot\\Content\\css\\pms-overrides.css",
+              "RelativeToolTip": "PMS\\wwwroot\\Content\\css\\pms-overrides.css",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-19T14:53:10.58Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\TimeOff\\Index.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TimeOff\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\TimeOff\\Index.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TimeOff\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-19T14:31:20.645Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "PMS\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-19T14:09:20.225Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

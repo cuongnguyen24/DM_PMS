@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ NGHỈ PHÉP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">BẢNG TỔNG HỢP SỐ LIỆU THEO DÕI NGHỈ PHÉP NĂM 2025</h4>
+
+                <!-- Bộ lọc -->
+                <div class="row mt-3 mb-3">
+                    <div class="col-md-2">
+                        <label>Chọn thời gian:</label>
+                        <select class="form-control" id="selectYear">
+                            <option>Năm</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnXuatExcel" class="btn btn-primary">Xuất Excel</button>
+                    </div>
+                </div>
+
+                <!-- Bảng Handsontable -->
+                <div class="table-responsive" id="leaveTrackingWrapper" style="overflow:auto;">
+                    <div id="leaveTrackingTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById('leaveTrackingTable');
+
+        const nestedHeaders = [
+            [
+                'TT', 'HỌ VÀ TÊN', 'Mã nhân viên',
+                { label: 'Ngày tuyển dụng', colspan: 3 },
+                { label: 'Số năm lao động tính đến 31/12/24', colspan: 2 },
+                'Số ngày phép theo chế độ', 'Số ngày đã nghỉ cả năm',
+                'Số ngày phép còn lại',
+                { label: 'Số liệu chi tiết từng tháng', colspan: 12 },
+                'Chuyển phép sang tháng 01/2026'
+            ],
+            ['', '', '',
+                'ngày', 'tháng', 'năm',
+                'Năm', 'Tháng',
+                '', '', '',
+                'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
+                ''
+            ]
+        ];
+
+        const columns = [
+            { data: 0, type: 'numeric', width: 40 },  // TT
+            { data: 1, type: 'text', width: 160 },    // Họ và tên
+            { data: 2, type: 'text', width: 100 },    // Mã nhân viên
+            { data: 3, type: 'numeric', width: 50 },  // Ngày
+            { data: 4, type: 'numeric', width: 50 },  // Tháng
+            { data: 5, type: 'numeric', width: 60 },  // Năm
+            { data: 6, type: 'numeric', width: 60 },  // Số năm
+            { data: 7, type: 'numeric', width: 60 },  // Số tháng
+            { data: 8, type: 'numeric', width: 60 },  // Số ngày phép chế độ
+            { data: 9, type: 'numeric', width: 60 },  // Số ngày đã nghỉ
+            { data: 10, type: 'numeric', width: 60 }, // Còn lại
+            // T1 đến T12
+            ...Array.from({ length: 12 }, (_, i) => ({
+                data: 11 + i,
+                type: 'numeric',
+                width: 50
+            })),
+            { data: 23, type: 'numeric', width: 100 } // Chuyển phép
+        ];
+
+        const sampleData = [
+            [1, 'Nguyễn 111', 'zzz', 3, 2, 1990, 35, 11, 19, null, null],
+            [2, 'Nguyễn 112', 'zzz', 2, 1, 2008, 16, 7, 18, 3, 15],
+            [3, 'Nguyễn 113', 'zzz', 3, 8, 2008, 16, 4, 18, 3, 15],
+            [4, 'Nguyễn 114', 'zzz', 3, 8, 2008, 16, 4, 18, 3, 15],
+            [5, 'Nguyễn 115', 'zzz', 14, 8, 2000, 24, 4, 17, null, null],
+            [6, 'Nguyễn 116', 'zzz', 6, 11, 1991, 33, 1, 17, null, null],
+            [7, 'Nguyễn 117', 'zzz', 7, 8, 1999, 25, 5, 17, null, null]
+        ];
+
+        const hot = new Handsontable(container, {
+            data: sampleData,
+            columns: columns,
+            nestedHeaders: nestedHeaders,
+            rowHeaders: true,
+            colHeaders: false,
+            width: '100%',
+            height: calculateHotHeight(),
+            stretchH: 'all',
+            fixedColumnsLeft: 3,
+            manualColumnMove: true,
+            manualColumnFreeze: true,
+            contextMenu: true,
+            dropdownMenu: true,
+            filters: true,
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+
+        // Resize responsive
+        function calculateHotHeight() {
+            const windowHeight = window.innerHeight;
+            return Math.max(windowHeight - 360, 400);
+        }
+
+        window.addEventListener('resize', () => {
+            hot.updateSettings({ height: calculateHotHeight() });
+        });
+
+        document.getElementById('btnTimKiem').addEventListener('click', function () {
+            alert("Tìm kiếm chưa kết nối backend.");
+        });
+
+        document.getElementById('btnXuatExcel').addEventListener('click', function () {
+            alert("Chức năng xuất Excel sẽ được tích hợp sau.");
+        });
+    });
+</script>

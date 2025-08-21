@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg224"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="BienAp.svg">
+  <defs
+     id="defs218" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="794.21903"
+     inkscape:cy="1015.9504"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata221">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="stroke-width:0.13229166;fill:#800080"
+       inkscape:connector-curvature="0"
+       d="m 50.826483,78.451346 h 10.900969 v 5.90573 H 50.826483 Z m -34.231618,0 h 10.901104 v 5.90573 H 16.594865 Z M 50.826483,0.13101962 H 61.727452 V 2.9794431 H 50.826483 Z m -17.723329,0 H 44.004123 V 2.9794431 H 33.103154 Z m -16.508289,0 H 27.495969 V 3.0839522 H 16.594865 Z M -0.43761657,15.470618 H 4.3993904 v 48.695699 h -4.83700697 z m 73.14536957,0 h 4.837006 v 48.695699 h -4.837006 z m 0,55.067932 c 0,3.379362 -3.247507,6.118945 -7.253955,6.118945 H 11.653209 c -4.0061776,0 -7.2539536,-2.739583 -7.2539536,-6.118945 V 9.0982515 c 0,-3.3793629 3.247776,-6.1189447 7.2539536,-6.1189447 h 53.800589 c 4.006448,0 7.253955,2.7395818 7.253955,6.1189447 z M 67.598765,11.85814 H 9.3203334 v 1.299599 H 67.598765 Z m 0,54.621059 H 9.3203334 v 1.299599 H 67.598765 Z M 10.366148,13.637372 v 52.379385 h 1.299651 V 13.637372 Z m 2.898223,0 v 52.379385 h 1.299653 V 13.637372 Z m 2.898496,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898359,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.89836,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898495,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.89836,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898495,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898224,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898495,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.89836,0 v 52.379385 h 1.299651 V 13.637372 Z m 2.898494,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.89836,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898359,0 V 66.016757 H 49.34488 V 13.637372 Z m 2.898495,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898225,0 v 52.379385 h 1.299651 V 13.637372 Z m 2.898494,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.89836,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898497,0 v 52.379385 h 1.299652 V 13.637372 Z m 2.898359,0 V 66.016757 H 66.73531 V 13.637372 Z"
+       id="path199" />
+  </g>
+</svg>

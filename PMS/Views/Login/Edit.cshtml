@@ -1,0 +1,112 @@
+﻿@model PMS.Models.TblUser
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>TblUser</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserCode" class="control-label"></label>
+                <input asp-for="UserCode" class="form-control" />
+                <span asp-validation-for="UserCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dob" class="control-label"></label>
+                <input asp-for="Dob" class="form-control" />
+                <span asp-validation-for="Dob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BankNo" class="control-label"></label>
+                <input asp-for="BankNo" class="form-control" />
+                <span asp-validation-for="BankNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryConfficient" class="control-label"></label>
+                <input asp-for="SalaryConfficient" class="form-control" />
+                <span asp-validation-for="SalaryConfficient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmploymentDate" class="control-label"></label>
+                <input asp-for="EmploymentDate" class="form-control" />
+                <span asp-validation-for="EmploymentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateIssued" class="control-label"></label>
+                <input asp-for="DateIssued" class="form-control" />
+                <span asp-validation-for="DateIssued" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountName" class="control-label"></label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderNumber" class="control-label"></label>
+                <input asp-for="OrderNumber" class="form-control" />
+                <span asp-validation-for="OrderNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedUser" class="control-label"></label>
+                <input asp-for="CreatedUser" class="form-control" />
+                <span asp-validation-for="CreatedUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedDate" class="control-label"></label>
+                <input asp-for="ModifiedDate" class="form-control" />
+                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedUser" class="control-label"></label>
+                <input asp-for="ModifiedUser" class="form-control" />
+                <span asp-validation-for="ModifiedUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

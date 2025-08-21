@@ -1,0 +1,98 @@
+﻿@model int?
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="taxTableWrapper" style="overflow:auto;">
+    <div id="taxTable"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+    <script>
+        (function () {
+            const container = document.getElementById('taxTable');
+
+            const nestedHeaders = [
+                ['Số', 'Tên', 'Mã nhân viên', 'TK', 'Hệ số lương', 'Thu nhập chịu thuế tháng 10/2024', 'Thuế phải nộp', 'Tổng cộng']
+            ];
+
+            const columns = [
+                { data: 0, type: 'numeric', width: 50 },
+                { data: 1, type: 'text', width: 180 },
+                { data: 2, type: 'text', width: 100 },
+                { data: 3, type: 'text', width: 100 },
+                { data: 4, type: 'numeric', numericFormat: { pattern: '0.00' }, width: 100 },
+                { data: 5, type: 'numeric', numericFormat: { pattern: '0,0' }, width: 160 },
+                { data: 6, type: 'numeric', numericFormat: { pattern: '0,0' }, width: 120 },
+                { data: 7, type: 'numeric', numericFormat: { pattern: '0,0' }, readOnly: true, width: 120 },
+            ];
+
+            const data = [
+                [1, 'Nguyễn 001', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [2, 'Nguyễn 002', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [3, 'Nguyễn 003', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [4, 'Nguyễn 004', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [5, 'Nguyễn 005', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [6, 'Nguyễn 006', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [7, 'Nguyễn 007', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [8, 'Nguyễn 008', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [9, 'Nguyễn 009', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [10, 'Nguyễn 010', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [11, 'Nguyễn 011', 'zzz', '#N/A', '#N/A', '', '', ''],
+                [12, 'Nguyễn 012', 'zzz', '#N/A', '#N/A', '', '', ''],
+            ];
+
+            const hot = new Handsontable(container, {
+                data: data,
+                columns: columns,
+                colHeaders: false,
+                rowHeaders: true,
+                nestedHeaders: nestedHeaders,
+                height: calculateHotHeight(),
+                width: '100%',
+                stretchH: 'all',
+                manualColumnFreeze: true,
+                manualColumnMove: true,
+                fixedColumnsLeft: 2,
+                contextMenu: {
+                    items: {
+                        row_above: {},
+                        row_below: {},
+                        hsep1: '---------',
+                        freeze_column: { name: 'Cố định cột' },
+                        unfreeze_column: { name: 'Bỏ cố định cột' },
+                        hsep2: '---------',
+                        undo: {},
+                        redo: {},
+                        clear_custom: {
+                            name: 'Xóa nội dung các ô đã chọn',
+                            callback() { hot.emptySelectedCells(); }
+                        }
+                    }
+                },
+                filters: true,
+                dropdownMenu: true,
+                licenseKey: 'non-commercial-and-evaluation',
+                afterChange: function (changes, source) {
+                    if (source === 'loadData' || !changes) return;
+
+                    changes.forEach(([row, prop, oldVal, newVal]) => {
+                        const thuNhap = parseFloat(hot.getDataAtCell(row, 5)) || 0;
+                        const thue = parseFloat(hot.getDataAtCell(row, 6)) || 0;
+                        const tong = thuNhap + thue;
+                        hot.setDataAtCell(row, 7, tong);
+                    });
+                }
+            });
+
+            function calculateHotHeight() {
+                const windowHeight = window.innerHeight;
+                const offset = 360;
+                const calculated = windowHeight - offset;
+                return Math.max(calculated, 320);
+            }
+
+            window.addEventListener('resize', () => {
+                const newHeight = calculateHotHeight();
+                hot.updateSettings({ height: newHeight });
+            });
+        })();
+    </script>
+</div>

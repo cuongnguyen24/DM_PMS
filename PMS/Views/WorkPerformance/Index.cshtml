@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ HIỆU QUẢ CÔNG VIỆC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">BẢNG TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ HIỆU QUẢ CÔNG VIỆC THÁNG 09/2025</h4>
+
+                <!-- Bộ lọc -->
+                <div class="row mt-3 mb-3">
+                    <div class="col-md-2">
+                        <label>Chọn thời gian:</label>
+                        <select class="form-control" id="selectQuarter">
+                            <option value="1">Quý I</option>
+                            <option value="2">Quý II</option>
+                            <option value="3">Quý III</option>
+                            <option value="4">Quý IV</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Chọn năm:</label>
+                        <select class="form-control" id="selectYear">
+                            @for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 1; i++)
+                            {
+                                var selected = i == DateTime.Now.Year ? "selected" : "";
+                                <option value="@i" selected="@selected">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Chọn phòng ban:</label>
+                        <select class="form-control" id="selectPhongBan">
+                            <option value="">-- Tất cả --</option>
+                            <option value="PQL">Người Quản lý</option>
+                            <option value="HDT">Phòng Tổng hợp HDTT</option>
+                            <!-- Add more if needed -->
+                        </select>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <!-- Bảng Handsontable -->
+                <div class="table-responsive" id="timekeepingHotWrapper" style="overflow:auto;">
+                    <div id="timekeepingHot"></div>
+                    <div class="text-muted mt-2">
+                        <strong>Ghi chú:</strong> Kti (?), Kđhi (?), Kncđi (?)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById('timekeepingHot');
+
+        // Nested headers theo ảnh bạn gửi
+        const nestedHeaders = [
+            ['STT', 'HỌ VÀ TÊN', 'Số TK', { label: 'HỆ SỐ ĐG', colspan: 3 }, { label: 'NGÀY CÔNG', colspan: 4 }, 'Ghi chú'],
+            ['', '', '', 'Kti', 'Kđh i', 'Kncd i', 'Nti', 'Nđh i', 'Nncd i', 'NLễ', '']
+        ];
+
+        // Định nghĩa cột tương ứng
+        const columns = [
+            { data: 0, type: 'numeric', width: 50 },
+            { data: 1, type: 'text', width: 180 },
+            { data: 2, type: 'text', width: 80 },
+            { data: 3, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 4, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 5, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 6, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 7, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 8, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 9, type: 'numeric', numericFormat: { pattern: '0.0' }, allowInvalid: false, width: 60 },
+            { data: 10, type: 'text', width: 200 }
+        ];
+
+        // Tạo dữ liệu mẫu
+        function makeRow(index, fullName, account) {
+            return [
+                index,
+                fullName,
+                account,
+                1.0,  // Kti
+                0.7,  // Kđh i
+                0.3,  // Kncd i
+                22.0, // Nti
+                0.7,  // Nđh i
+                0.3,  // Nncd i
+                1.0,  // NLễ
+                ''    // Ghi chú
+            ];
+        }
+
+        const data = [
+            makeRow(1, 'Nguyễn 111', 'zzz'),
+            makeRow(2, 'Nguyễn 112', 'zzz'),
+            makeRow(3, 'Nguyễn 113', 'zzz'),
+            makeRow(4, 'Nguyễn 114', 'zzz'),
+            makeRow(5, 'Nguyễn 115', 'zzz'),
+            makeRow(6, 'Nguyễn 116', 'zzz'),
+            makeRow(7, 'Nguyễn 117', 'zzz'),
+            makeRow(8, 'Nguyễn 118', 'zzz'),
+            makeRow(9, 'Nguyễn 119', 'zzz'),
+            makeRow(10, 'Nguyễn 120', 'zzz')
+        ];
+
+        const hot = new Handsontable(container, {
+            data: data,
+            columns: columns,
+            nestedHeaders: nestedHeaders,
+            colHeaders: false,
+            rowHeaders: true,
+            height: calculateHotHeight(),
+            width: '100%',
+            stretchH: 'all',
+            manualColumnFreeze: true,
+            manualColumnMove: true,
+            fixedColumnsLeft: 3,
+            contextMenu: {
+                items: {
+                    row_above: {},
+                    row_below: {},
+                    hsep1: '---------',
+                    freeze_column: { name: 'Cố định cột' },
+                    unfreeze_column: { name: 'Bỏ cố định cột' },
+                    hsep2: '---------',
+                    undo: {},
+                    redo: {},
+                    clear_custom: {
+                        name: 'Xóa nội dung các ô đã chọn',
+                        callback() {
+                            hot.emptySelectedCells();
+                        }
+                    }
+                }
+            },
+            filters: true,
+            dropdownMenu: true,
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+
+        // Nút tìm kiếm giả lập
+        document.getElementById('btnTimKiem').addEventListener('click', () => {
+            alert('Tìm kiếm theo quý, năm, phòng ban chưa kết nối dữ liệu thực.');
+        });
+
+        // Hàm tính chiều cao phù hợp
+        function calculateHotHeight() {
+            const windowHeight = window.innerHeight;
+            const offset = 360; // Trừ phần header, filter, padding, navbar, ...
+            const calculated = windowHeight - offset;
+            return Math.max(calculated, 320); // Tối thiểu 320px
+        }
+
+        // Tự động resize khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            const newHeight = calculateHotHeight();
+            hot.updateSettings({ height: newHeight });
+        });
+    });
+</script>
