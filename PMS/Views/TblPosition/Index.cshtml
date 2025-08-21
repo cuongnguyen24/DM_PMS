@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PMS.Models.TblPosition>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row row-head">
+                    <div class="col-lg-9">
+                        <h4 class="card-title" style="margin-bottom:0px;">Quản lý chức vụ</h4>
+                    </div>
+                    <div class="col-lg-3 objRight">
+                        <a href="@Url.Action("Create")" class="btn btn-sm btn-success">Thêm mới</a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap">#</th>
+                                <th>Tên chức vụ</th>
+                                <th>Tên viết tắt</th>
+                                <th>Loại đối tượng</th>
+                                <th>Hệ số cơ bản chức vụ</th>
+                                <th>Hệ số trách nhiệm</th>
+                                <th>Hệ số chức vụ</th>
+                                <th>Ngày hiệu lực</th>
+                                <th>Mô tả</th>
+                                <th>Ghi chú</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@(i++)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TypeObject)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BasicPosiontConfficient)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ResponsibilityCoefficient)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PosiontConfficient)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DateIssued)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Note)
+                                        </td>
+                                        <td>
+                                            @if (item.Status == 0)
+                                            {
+                                                <label>
+                                                    Hết hiệu lực
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label>
+                                                    Hoạt động
+                                                </label>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

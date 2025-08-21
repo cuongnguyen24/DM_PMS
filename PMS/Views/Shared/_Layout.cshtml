@@ -9,24 +9,24 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
     <title>Hệ thống Quản lý lương</title>
     <!-- This page CSS -->
     <!-- chartist CSS -->
-    <link href="../assets/node_modules/morrisjs/morris.css" rel="stylesheet" />
+    <link href="~/assets/node_modules/morrisjs/morris.css" rel="stylesheet" />
     
     <!--Toaster Popup message CSS -->
-    <link href="../assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet" />
+    <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet" />
     <!-- Custom CSS -->
-    <link href="../Content/css/style.min.css" rel="stylesheet" />
+    <link href="~/Content/css/style.min.css" rel="stylesheet" />
     <!-- Dashboard 1 Page CSS -->
-    <link href="../Content/css/pages/dashboard1.css" rel="stylesheet" />
-    <link href="../assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/dashboard1.css" rel="stylesheet" />
+    <link href="~/assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" />
 
-    <link href="./Content/css/MyStyle.css" rel="stylesheet" />
+    <link href="~/Content/css/MyStyle.css" rel="stylesheet" />
 
-    <script src="../assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-    <link href="../Content/css/pms-overrides.css" rel="stylesheet" />
+    <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <link href="~/Content/css/pms-overrides.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -361,33 +361,40 @@
 
 
     <!-- Bootstrap popper Core JavaScript -->
-    <script src="../assets/node_modules/popper/popper.min.js"></script>
-    <script src="../assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/node_modules/popper/popper.min.js"></script>
+    <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="../Content/js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/Content/js/perfect-scrollbar.jquery.min.js"></script>
     <!--Wave Effects -->
-    <script src="../Content/js/waves.js"></script>
+    <script src="~/Content/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="../Content/js/sidebarmenu.js"></script>
+    <script src="~/Content/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-    <script src="../Content/js/custom.js"></script>
+    <script src="~/Content/js/custom.js"></script>
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->
     <!--morris JavaScript -->
-    <script src="../assets/node_modules/raphael/raphael-min.js"></script>
-    <script src="../assets/node_modules/morrisjs/morris.min.js"></script>
-    <script src="../assets/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/assets/node_modules/raphael/raphael-min.js"></script>
+    <script src="~/assets/node_modules/morrisjs/morris.min.js"></script>
+    <script src="~/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
     <!-- Popup message jquery -->
-    <script src="../assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
     <!-- Chart JS -->
-    <script src="../Content/js/dashboard1.js"></script>
-    <script src="../assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    <script src="~/Content/js/dashboard1.js"></script>
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
     <!-- jQuery peity -->
-    <script src="../assets/node_modules/peity/jquery.peity.min.js"></script>
-    <script src="../assets/node_modules/peity/jquery.peity.init.js"></script>
-    <script src="../assets/node_modules/toast-master/js/jquery.toast.js"></script>
-    <script src="../Content/js/pages/toastr.js"></script>
+    <script src="~/assets/node_modules/peity/jquery.peity.min.js"></script>
+    <script src="~/assets/node_modules/peity/jquery.peity.init.js"></script>
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    <script src="~/Content/js/pages/toastr.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Hide preloader when page is loaded
+            $(".preloader").fadeOut();
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

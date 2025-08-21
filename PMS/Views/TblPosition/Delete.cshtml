@@ -1,0 +1,118 @@
+@model PMS.Models.TblPosition
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row row-head">
+                    <div class="col-lg-9">
+                        <h4 class="card-title" style="margin-bottom:0px;">Xóa chức vụ</h4>
+                    </div>
+                    <div class="col-lg-3 objRight">
+                        <a href="@Url.Action("Index")" class="btn btn-sm btn-secondary">Quay lại</a>
+                    </div>
+                </div>
+                <hr />
+                
+                <div class="alert alert-danger">
+                    <h5><i class="fa fa-exclamation-triangle"></i> Cảnh báo!</h5>
+                    <p class="mb-0">Bạn có chắc chắn muốn xóa chức vụ <strong>"@Model.Name"</strong> không?</p>
+                    <p class="mb-0 text-muted">Hành động này không thể hoàn tác.</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Thông tin chức vụ</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">Tên chức vụ:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+                                            
+                                            <dt class="col-sm-4">Tên viết tắt:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ShortName)</dd>
+                                            
+                                            <dt class="col-sm-4">Loại đối tượng:</dt>
+                                            <dd class="col-sm-8">
+                                                @if (Model.TypeObject == 1)
+                                                {
+                                                    <span class="badge badge-info">Nhân viên</span>
+                                                }
+                                                else if (Model.TypeObject == 2)
+                                                {
+                                                    <span class="badge badge-warning">Quản lý</span>
+                                                }
+                                                else if (Model.TypeObject == 3)
+                                                {
+                                                    <span class="badge badge-primary">Cấp cao</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary">@Model.TypeObject</span>
+                                                }
+                                            </dd>
+                                            
+                                            <dt class="col-sm-4">Ngày hiệu lực:</dt>
+                                            <dd class="col-sm-8">@Model.DateIssued.ToString("dd/MM/yyyy")</dd>
+                                            
+                                            <dt class="col-sm-4">Trạng thái:</dt>
+                                            <dd class="col-sm-8">
+                                                @if (Model.Status == 0)
+                                                {
+                                                    <span class="badge badge-danger">Hết hiệu lực</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-success">Hoạt động</span>
+                                                }
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">Hệ số cơ bản:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.BasicPosiontConfficient)</dd>
+                                            
+                                            <dt class="col-sm-4">Hệ số trách nhiệm:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ResponsibilityCoefficient)</dd>
+                                            
+                                            <dt class="col-sm-4">Hệ số chức vụ:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.PosiontConfficient)</dd>
+                                            
+                                            <dt class="col-sm-4">Mô tả:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+                                            
+                                            <dt class="col-sm-4">Ghi chú:</dt>
+                                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Note)</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <form asp-action="Delete" style="display: inline;">
+                                <input type="hidden" asp-for="Id" />
+                                <button type="submit" class="btn btn-danger btn-lg">
+                                    <i class="fa fa-trash"></i> Xác nhận xóa
+                                </button>
+                            </form>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                                <i class="fa fa-times"></i> Hủy bỏ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,18 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\PMS\\",
+  "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\tblposition\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\tblposition\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\tblbasesalaries\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\tblbasesalaries\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\controllers\\tblpositioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\controllers\\tblpositioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\wwwroot\\content\\css\\pms-overrides.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\wwwroot\\content\\css\\pms-overrides.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\pms\\pms\\views\\timeoff\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timeoff\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\controllers\\tblbasesalariescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\controllers\\tblbasesalariescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +30,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "pms-overrides.css",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\wwwroot\\Content\\css\\pms-overrides.css",
-              "RelativeDocumentMoniker": "PMS\\wwwroot\\Content\\css\\pms-overrides.css",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\wwwroot\\Content\\css\\pms-overrides.css",
-              "RelativeToolTip": "PMS\\wwwroot\\Content\\css\\pms-overrides.css",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-08-19T14:53:10.58Z"
+              "DocumentIndex": 4,
+              "Title": "TblBaseSalariesController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblBaseSalariesController.cs",
+              "RelativeDocumentMoniker": "PMS\\Controllers\\TblBaseSalariesController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblBaseSalariesController.cs",
+              "RelativeToolTip": "PMS\\Controllers\\TblBaseSalariesController.cs",
+              "ViewState": "AQIAAIEAAAAAAAAAAAAAAJIAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-21T04:57:38.11Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\TimeOff\\Index.cshtml",
-              "RelativeDocumentMoniker": "PMS\\Views\\TimeOff\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\TimeOff\\Index.cshtml",
-              "RelativeToolTip": "PMS\\Views\\TimeOff\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
+              "Title": "TblPositionController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblPositionController.cs",
+              "RelativeDocumentMoniker": "PMS\\Controllers\\TblPositionController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblPositionController.cs",
+              "RelativeToolTip": "PMS\\Controllers\\TblPositionController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-21T04:52:02.073Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "PMS\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAHwAAAAAAAAAAAAAAPoAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-19T14:31:20.645Z"
+              "WhenOpened": "2025-08-21T04:51:23.702Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblBaseSalaries\\Create.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TblBaseSalaries\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblBaseSalaries\\Create.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TblBaseSalaries\\Create.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAYwBwAAABRAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-21T04:50:42.444Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "PMS\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\PMS\\PMS\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "PMS\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAABFAAAA",
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Create.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Create.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TblPosition\\Create.cshtml",
+              "ViewState": "AQIAAEIAAAAAAAAAAAAYwF4AAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-19T14:09:20.225Z",
+              "WhenOpened": "2025-08-21T04:44:40.765Z",
               "EditorCaption": ""
             }
           ]

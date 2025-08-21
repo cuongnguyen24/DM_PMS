@@ -1,0 +1,79 @@
+﻿@model PMS.Models.TblPosition
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TblPosition</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShortName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShortName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TypeObject)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TypeObject)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BasicPosiontConfficient)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BasicPosiontConfficient)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResponsibilityCoefficient)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResponsibilityCoefficient)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PosiontConfficient)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PosiontConfficient)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateIssued)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateIssued)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
