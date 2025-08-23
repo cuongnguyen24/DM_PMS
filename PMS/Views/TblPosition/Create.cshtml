@@ -5,6 +5,59 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <style type="text/css">
+        .input-group-text {
+            cursor: pointer;
+        }
+        .form-check {
+            margin-bottom: 0;
+        }
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+        .form-group label {
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .form-control {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        @@media (max-width: 768px) {
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            .d-flex.align-items-center {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            .form-check.mr-4 {
+                margin-right: 0 !important;
+                margin-bottom: 0.5rem;
+            }
+        }
+        @@media (min-width: 769px) and (max-width: 992px) {
+            .col-lg-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            .col-lg-4:last-child {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+}
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -18,123 +71,133 @@
                     </div>
                     <hr />
                     
-                    <form asp-action="Create" method="post">
+                    <form asp-action="Create" method="post" id="createForm">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div id="customValidationError" class="alert alert-danger" style="display: none;"></div>
                         
+                        <!-- Row 1: Tên chức vụ và Tên viết tắt -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Name" class="control-label font-weight-bold">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="control-label font-weight-bold mb-1">
                                         Tên chức vụ <span class="text-danger">*</span>
                                     </label>
-                                    <input asp-for="Name" class="form-control" placeholder="Nhập tên chức vụ" />
+                                    <input asp-for="Name" class="form-control" placeholder="Nhập tên chức vụ" required />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="ShortName" class="control-label font-weight-bold">Tên viết tắt</label>
-                                    <input asp-for="ShortName" class="form-control" placeholder="Nhập tên viết tắt" />
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ShortName" class="control-label font-weight-bold mb-1">Tên viết tắt</label>
+                                    <input asp-for="ShortName" class="form-control" placeholder="Nhập tên viết tắt chức vụ" />
                                     <span asp-validation-for="ShortName" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                         
+                        <!-- Row 2: Loại đối tượng và Ngày hiệu lực -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="TypeObject" class="control-label font-weight-bold">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="TypeObject" class="control-label font-weight-bold mb-2">
                                         Loại đối tượng <span class="text-danger">*</span>
                                     </label>
-                                    <select asp-for="TypeObject" class="form-control">
-                                        <option value="">-- Chọn loại đối tượng --</option>
-                                        <option value="1">Nhân viên</option>
-                                        <option value="2">Quản lý</option>
-                                        <option value="3">Cấp cao</option>
-                                    </select>
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check mr-4">
+                                            <input class="form-check-input" type="radio" asp-for="TypeObject" value="1" id="typeManager" checked>
+                                            <label class="form-check-label" for="typeManager">
+                                                Nhà quản lý
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" asp-for="TypeObject" value="2" id="typeEmployee">
+                                            <label class="form-check-label" for="typeEmployee">
+                                                Người lao động
+                                            </label>
+                                        </div>
+                                    </div>
                                     <span asp-validation-for="TypeObject" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="DateIssued" class="control-label font-weight-bold">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="DateIssued" class="control-label font-weight-bold mb-1">
                                         Ngày hiệu lực <span class="text-danger">*</span>
                                     </label>
-                                    <input asp-for="DateIssued" class="form-control" type="date" />
+                                    <div class="input-group">
+                                        <input asp-for="DateIssued" class="form-control" type="text" id="dateIssued" readonly />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                     <span asp-validation-for="DateIssued" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                         
+                        <!-- Row 3: Các hệ số -->
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="BasicPosiontConfficient" class="control-label font-weight-bold">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="BasicPosiontConfficient" class="control-label font-weight-bold mb-1">
                                         Hệ số cơ bản chức vụ
                                     </label>
-                                    <input asp-for="BasicPosiontConfficient" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                                    <input asp-for="BasicPosiontConfficient" class="form-control" type="number" step="0.01" value="3" />
                                     <span asp-validation-for="BasicPosiontConfficient" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="ResponsibilityCoefficient" class="control-label font-weight-bold">
-                                        Hệ số trách nhiệm
-                                    </label>
-                                    <input asp-for="ResponsibilityCoefficient" class="form-control" type="number" step="0.01" placeholder="0.00" />
-                                    <span asp-validation-for="ResponsibilityCoefficient" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="PosiontConfficient" class="control-label font-weight-bold">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PosiontConfficient" class="control-label font-weight-bold mb-1">
                                         Hệ số chức vụ
                                     </label>
-                                    <input asp-for="PosiontConfficient" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                                    <input asp-for="PosiontConfficient" class="form-control" type="number" step="0.01" value="3" />
                                     <span asp-validation-for="PosiontConfficient" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ResponsibilityCoefficient" class="control-label font-weight-bold mb-1">
+                                        Hệ số trách nhiệm
+                                    </label>
+                                    <input asp-for="ResponsibilityCoefficient" class="form-control" type="number" step="0.01" value="3" />
+                                    <span asp-validation-for="ResponsibilityCoefficient" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                         
+                        <!-- Row 4: Mô tả và Ghi chú -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Description" class="control-label font-weight-bold">Mô tả</label>
-                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Nhập mô tả chức vụ"></textarea>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Description" class="control-label font-weight-bold mb-1">Mô tả</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Thông tin mô tả"></textarea>
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Note" class="control-label font-weight-bold">Ghi chú</label>
-                                    <textarea asp-for="Note" class="form-control" rows="3" placeholder="Nhập ghi chú"></textarea>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Note" class="control-label font-weight-bold mb-1">Ghi chú</label>
+                                    <textarea asp-for="Note" class="form-control" rows="3" placeholder="Nội dung ghi chú"></textarea>
                                     <span asp-validation-for="Note" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Status" class="control-label font-weight-bold">
-                                        Trạng thái <span class="text-danger">*</span>
-                                    </label>
-                                    <select asp-for="Status" class="form-control">
-                                        <option value="1">Hoạt động</option>
-                                        <option value="0">Hết hiệu lực</option>
-                                    </select>
-                                    <span asp-validation-for="Status" class="text-danger"></span>
+                        <!-- Row 5: Buttons -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg mr-2">
+                                        <i class="fa fa-save"></i> Ghi dữ liệu
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-success btn-lg">
+                                        <i class="fa fa-arrow-left"></i> Quay lại
+                                    </a>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="form-group text-center mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fa fa-save"></i> Tạo mới
-                            </button>
-                            <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
-                                <i class="fa fa-arrow-left"></i> Quay lại
-                            </a>
                         </div>
                     </form>
                 </div>
@@ -145,16 +208,100 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Set default date to today
-            $('#DateIssued').val(new Date().toISOString().split('T')[0]);
+            // Initialize date picker
+            $('#dateIssued').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'vi'
+            });
             
-            // Handle empty numeric fields
-            $('input[type="number"]').each(function() {
-                if ($(this).val() === '') {
-                    $(this).val('');
+            // Set default date to today
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            $('#dateIssued').val(dd + '/' + mm + '/' + yyyy);
+            
+            // Calendar icon click event
+            $('.input-group-text').click(function() {
+                $('#dateIssued').focus();
+            });
+            
+            // Function to check if position exists
+            function checkPositionExists(positionName, isFormSubmit) {
+                var isValid = true;
+                
+                $.ajax({
+                    url: '@Url.Action("CheckPositionExists", "TblPosition")',
+                    type: 'POST',
+                    data: { 
+                        positionName: positionName,
+                        __RequestVerificationToken: $('[name=__RequestVerificationToken]').val()
+                    },
+                    async: false,
+                    beforeSend: function() {
+                        console.log('Checking position exists:', positionName);
+                    },
+                    success: function(result) {
+                        console.log('Check result:', result);
+                        if (result.exists && result.isActive) {
+                            var errorMsg = 'Chức vụ "' + positionName + '" đã tồn tại và đang hoạt động. Vui lòng đặt tên chức vụ khác hoặc hết hiệu lực chức vụ hiện tại trước!';
+                            $('#customValidationError').html(errorMsg).show();
+                            if (isFormSubmit) {
+                                $('#Name').focus();
+                            }
+                            isValid = false;
+                        } else {
+                            $('#customValidationError').hide();
+                            isValid = true;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response:', xhr.responseText);
+                        if (isFormSubmit) {
+                            alert('Có lỗi xảy ra khi kiểm tra chức vụ. Vui lòng thử lại!');
+                        }
+                        isValid = false;
+                    }
+                });
+                
+                return isValid;
+            }
+            
+            // Real-time validation when typing position name
+            $('#Name').on('blur', function() {
+                var positionName = $(this).val().trim();
+                if (positionName !== '') {
+                    checkPositionExists(positionName, false);
                 }
+            });
+            
+            // Form validation
+            $('#createForm').on('submit', function(e) {
+                var positionName = $('#Name').val().trim();
+                
+                if (positionName === '') {
+                    alert('Vui lòng nhập tên chức vụ!');
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Check validation
+                var isValidationPassed = checkPositionExists(positionName, true);
+                
+                if (!isValidationPassed) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                return true;
             });
         });
     </script>

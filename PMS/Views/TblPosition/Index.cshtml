@@ -25,14 +25,12 @@
                                 <th class="text-nowrap">#</th>
                                 <th>Tên chức vụ</th>
                                 <th>Tên viết tắt</th>
-                                <th>Loại đối tượng</th>
                                 <th>Hệ số cơ bản chức vụ</th>
                                 <th>Hệ số trách nhiệm</th>
                                 <th>Hệ số chức vụ</th>
                                 <th>Ngày hiệu lực</th>
                                 <th>Mô tả</th>
                                 <th>Ghi chú</th>
-                                <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
@@ -47,9 +45,6 @@
                                         <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.ShortName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TypeObject)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.BasicPosiontConfficient)
@@ -70,23 +65,12 @@
                                             @Html.DisplayFor(modelItem => item.Note)
                                         </td>
                                         <td>
-                                            @if (item.Status == 0)
-                                            {
-                                                <label>
-                                                    Hết hiệu lực
-                                                </label>
-                                            }
-                                            else
-                                            {
-                                                <label>
-                                                    Hoạt động
-                                                </label>
-                                            }
-
-                                        </td>
-                                        <td>
                                             <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                                            <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a> |
+                                            @if (item.Status == 1)
+                                            {
+                                                <a href="#" onclick="confirmDeactivate(@item.Id, '@item.Name')" class="text-warning">Hết hiệu lực</a>
+                                            }
                                         </td>
                                     </tr>
                                 }
@@ -98,4 +82,19 @@
         </div>
     </div>
 </div>
+
+<!-- Hidden form for deactivate action -->
+<form id="deactivateForm" method="post" style="display: none;">
+    @Html.AntiForgeryToken()
+</form>
+
+<script>
+    function confirmDeactivate(id, name) {
+        if (confirm('Bạn có chắc chắn muốn đổi trạng thái của chức vụ "' + name + '" sang hết hiệu lực không?')) {
+            var form = document.getElementById('deactivateForm');
+            form.action = '@Url.Action("Deactivate", "TblPosition")/' + id;
+            form.submit();
+        }
+    }
+</script>
 

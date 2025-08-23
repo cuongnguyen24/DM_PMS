@@ -18,7 +18,7 @@ namespace PMS.Controllers
         // GET: TblPosition
         public async Task<IActionResult> Index()
         {
-            var positions = await _context.TblPositions.ToListAsync();
+            var positions = await _context.TblPositions.Where(x=> x.Status == 1).ToListAsync();
             return View(positions);
         }
 
@@ -31,12 +31,29 @@ namespace PMS.Controllers
         // POST: TblPosition/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ShortName,TypeObject,BasicPosiontConfficient,ResponsibilityCoefficient,PosiontConfficient,DateIssued,Description,Note,Status")] TblPosition tblPosition)
+        public async Task<IActionResult> Create([Bind("Name,ShortName,TypeObject,BasicPosiontConfficient,ResponsibilityCoefficient,PosiontConfficient,DateIssued,Description,Note")] TblPosition tblPosition)
         {
             if (ModelState.IsValid)
             {
+                // Check if position with same name already exists and is active
+                var existingPosition = await _context.TblPositions
+                    .FirstOrDefaultAsync(p => p.Name.ToLower() == tblPosition.Name.ToLower() && p.Status == 1);
+                
+                if (existingPosition != null)
+                {
+                    ModelState.AddModelError("Name", $"Chức vụ '{tblPosition.Name}' đã tồn tại và đang hoạt động. Vui lòng đặt tên chức vụ khác hoặc hết hiệu lực chức vụ hiện tại trước!");
+                    return View(tblPosition);
+                }
+                
+                // Set default status to active (1)
+                tblPosition.Status = 1;
+                
                 _context.Add(tblPosition);
                 await _context.SaveChangesAsync();
+                
+                TempData["AlertMessage"] = "Thêm mới chức vụ thành công!";
+                TempData["AlertType"] = "success";
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(tblPosition);
@@ -136,6 +153,44 @@ namespace PMS.Controllers
             }
 
             return View(tblPosition);
+        }
+
+        // POST: TblPosition/Deactivate/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            var tblPosition = await _context.TblPositions.FindAsync(id);
+            if (tblPosition != null)
+            {
+                tblPosition.Status = 0; // Set status to inactive
+                _context.Update(tblPosition);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: TblPosition/CheckPositionExists
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckPositionExists(string positionName, int? excludeId = null)
+        {
+            var query = _context.TblPositions.Where(p => p.Name.ToLower() == positionName.ToLower() && p.Status == 1);
+            
+            if (excludeId.HasValue)
+            {
+                query = query.Where(p => p.Id != excludeId.Value);
+            }
+            
+            var existingPosition = await query.FirstOrDefaultAsync();
+            
+            var result = new
+            {
+                exists = existingPosition != null,
+                isActive = existingPosition != null
+            };
+            
+            return Json(result);
         }
 
         private bool TblPositionExists(int id)
