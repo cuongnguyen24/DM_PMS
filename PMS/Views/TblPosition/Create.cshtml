@@ -7,55 +7,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <style type="text/css">
-        .input-group-text {
-            cursor: pointer;
-        }
-        .form-check {
-            margin-bottom: 0;
-        }
-        .form-check-input:checked {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .form-group {
-            margin-bottom: 0.75rem;
-        }
-        .form-group label {
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-        .form-control {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.9rem;
-        }
-        .card-body {
-            padding: 1.5rem;
-        }
-        @@media (max-width: 768px) {
-            .form-group {
-                margin-bottom: 1rem;
-            }
-            .d-flex.align-items-center {
-                flex-direction: column;
-                align-items: flex-start !important;
-            }
-            .form-check.mr-4 {
-                margin-right: 0 !important;
-                margin-bottom: 0.5rem;
-            }
-        }
-        @@media (min-width: 769px) and (max-width: 992px) {
-            .col-lg-4 {
-                flex: 0 0 50%;
-                max-width: 50%;
-            }
-            .col-lg-4:last-child {
-                flex: 0 0 100%;
-                max-width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/tbl-position-forms.css">
 }
 
 <div class="container-fluid">
@@ -125,13 +77,14 @@
                                         Ngày hiệu lực <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <input asp-for="DateIssued" class="form-control" type="text" id="dateIssued" readonly />
+                                        <input class="form-control" type="text" id="dateIssued" readonly />
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
+                                    <input type="hidden" asp-for="DateIssued" id="dateIssuedHidden" />
                                     <span asp-validation-for="DateIssued" class="text-danger"></span>
                                 </div>
                             </div>
@@ -218,6 +171,11 @@
                 autoclose: true,
                 todayHighlight: true,
                 language: 'vi'
+            }).on('changeDate', function(e) {
+                // Update hidden field with proper ISO format when date changes
+                var selectedDate = e.date;
+                var isoString = selectedDate.toISOString();
+                $('#dateIssuedHidden').val(isoString);
             });
             
             // Set default date to today
@@ -226,6 +184,9 @@
             var mm = String(today.getMonth() + 1).padStart(2, '0');
             var yyyy = today.getFullYear();
             $('#dateIssued').val(dd + '/' + mm + '/' + yyyy);
+            
+            // Set hidden field with today's date in ISO format
+            $('#dateIssuedHidden').val(today.toISOString());
             
             // Calendar icon click event
             $('.input-group-text').click(function() {

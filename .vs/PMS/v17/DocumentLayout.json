@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\tblposition\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\tblposition\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\controllers\\tblpositioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\controllers\\tblpositioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -30,11 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Edit.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Edit.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TblPosition\\Edit.cshtml",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAUwAkAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-23T03:30:43.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "TblBaseSalariesController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblBaseSalariesController.cs",
               "RelativeDocumentMoniker": "PMS\\Controllers\\TblBaseSalariesController.cs",
@@ -46,20 +63,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "TblPositionController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblPositionController.cs",
               "RelativeDocumentMoniker": "PMS\\Controllers\\TblPositionController.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblPositionController.cs",
               "RelativeToolTip": "PMS\\Controllers\\TblPositionController.cs",
-              "ViewState": "AQIAABoAAAAAAAAAAAAwwDAAAAAnAAAA",
+              "ViewState": "AQIAABUAAAAAAAAAAAAowBsAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-21T04:52:02.073Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\Shared\\_Layout.cshtml",
@@ -71,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblBaseSalaries\\Create.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblBaseSalaries\\Create.cshtml",
@@ -83,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Create.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Create.cshtml",

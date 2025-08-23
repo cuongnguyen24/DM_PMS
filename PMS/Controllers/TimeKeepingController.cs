@@ -11,7 +11,7 @@ namespace PMS.Controllers
 
         public IActionResult RenderLoaiCong(string loai, int nam)
         {
-            // Tùy bạn lấy dữ liệu theo 'loai' và 'nam' để bind vào view model (nếu có)
+            // Tùy bạn lấy dữ liệu theo 'loai' và 'nam' để bind vào view model (nếu cần)
             switch (loai)
             {
                 case "thoi_gian":
@@ -19,7 +19,7 @@ namespace PMS.Controllers
                 case "ca_dem":
                     return PartialView("_NightTable");
                 case "them_gio":
-                    return PartialView("_OvertimeTable");
+                    return PartialView("_OverTimeTable");
                 default:
                     return PartialView("_TimeTable");
             }

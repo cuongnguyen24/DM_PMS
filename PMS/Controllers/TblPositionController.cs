@@ -72,6 +72,7 @@ namespace PMS.Controllers
             {
                 return NotFound();
             }
+            
             return View(tblPosition);
         }
 
@@ -87,10 +88,23 @@ namespace PMS.Controllers
 
             if (ModelState.IsValid)
             {
+                // Check if position with same name already exists and is active (excluding current record)
+                var existingPosition = await _context.TblPositions
+                    .FirstOrDefaultAsync(p => p.Name.ToLower() == tblPosition.Name.ToLower() && p.Status == 1 && p.Id != tblPosition.Id);
+                
+                if (existingPosition != null)
+                {
+                    ModelState.AddModelError("Name", $"Chức vụ '{tblPosition.Name}' đã tồn tại và đang hoạt động. Vui lòng đặt tên chức vụ khác hoặc hết hiệu lực chức vụ hiện tại trước!");
+                    return View(tblPosition);
+                }
+                
                 try
                 {
                     _context.Update(tblPosition);
                     await _context.SaveChangesAsync();
+                    
+                    TempData["AlertMessage"] = "Cập nhật chức vụ thành công!";
+                    TempData["AlertType"] = "success";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
