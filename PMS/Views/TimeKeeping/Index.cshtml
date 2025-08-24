@@ -11,6 +11,18 @@
                 <!-- Bộ lọc -->
                 <div class="row">
                     <div class="col-lg-1">
+                        <label style="font-weight:bold">Chọn quý:</label>                        
+                    </div>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="selectQuarter">
+                            <option value="1">Quý 1</option>
+                            <option value="2">Quý 2</option>
+                            <option value="3">Quý 3</option>
+                            <option value="4">Quý 4</option>
+                            <option value="0" selected>Cả năm</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
                         <label style="font-weight:bold">Chọn năm:</label>                        
                     </div>
                     <div class="col-lg-2">
@@ -22,7 +34,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label>Loại công:</label><br />
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="loaiCong" value="thoi_gian" checked>
@@ -37,10 +49,11 @@
                             <label class="form-check-label">Thêm giờ</label>
                         </div>
                     </div>
-                    <div class="col-md-2 align-self-end">
+                    <div class="col-md-1 align-self-end">
                         <button id="btnTimKiem" class="btn btn-info">Tìm kiếm</button>
                     </div>
                 </div>
+
 
                 <!-- Kết quả load AJAX -->
                 <div class="table-responsive" id="bangKetQua">
@@ -58,34 +71,66 @@
             function loadBangChamCong() {
                 var loai = $('input[name="loaiCong"]:checked').val();
                 var nam = $('#selectYear').val();
+                var quy = $('#selectQuarter').val();
+                
+                console.log('Loading bảng chấm công:', { loai: loai, nam: nam, quy: quy });
 
                 $.ajax({
                     url: '/TimeKeeping/RenderLoaiCong',
                     type: 'GET',
-                    data: { loai: loai, nam: nam },
+                    data: { loai: loai, nam: nam, quy: quy },
                     success: function (data) {
+                        console.log('AJAX success, data length:', data.length);
                         $('#bangKetQua').html(data);
+                        
+                        // Trigger resize event để Handsontable tự động điều chỉnh kích thước
+                        $(window).trigger('resize');
                     },
-                    error: function () {
-                        alert("Lỗi khi tải dữ liệu.");
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error:', { status: status, error: error, response: xhr.responseText });
+                        alert("Lỗi khi tải dữ liệu: " + error);
                     }
                 });
             }
 
             // Khi ấn nút "Tìm kiếm"
             $('#btnTimKiem').click(function () {
+                console.log('Button Tìm kiếm clicked');
                 loadBangChamCong();
             });
 
             // ✅ Khi chọn radio "loaiCong" → tự động gọi
             $('input[name="loaiCong"]').change(function () {
+                console.log('Radio button changed to:', $(this).val());
                 loadBangChamCong();
             });
 
             // ✅ (tuỳ chọn) Khi thay đổi năm cũng tự động gọi
             $('#selectYear').change(function () {
+                console.log('Year changed to:', $(this).val());
                 loadBangChamCong();
             });
+
+            // ✅ (tuỳ chọn) Khi thay đổi quý cũng tự động gọi
+            $('#selectQuarter').change(function () {
+                console.log('Quarter changed to:', $(this).val());
+                loadBangChamCong();
+            });
+            
+            // Log trạng thái ban đầu
+            console.log('TimeKeeping page loaded, initial state:', {
+                selectedLoai: $('input[name="loaiCong"]:checked').val(),
+                selectedYear: $('#selectYear').val(),
+                selectedQuarter: $('#selectQuarter').val()
+            });
+            
+            // Hàm test để debug
+            window.testLoadTable = function(loai) {
+                console.log('Testing load table for:', loai);
+                $('input[name="loaiCong"][value="' + loai + '"]').prop('checked', true);
+                loadBangChamCong();
+            };
+
         });
     </script>
 }

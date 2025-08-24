@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PMS.Models;
+using PMS.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,6 +32,10 @@ namespace PMS
             // Đăng ký DbContext
             services.AddDbContext<PMSDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+            // Đăng ký các services
+            services.AddScoped<ITimeKeepingService, TimeKeepingService>();
+            
             // Thêm session
             services.AddDistributedMemoryCache();
             services.AddSession(options =>

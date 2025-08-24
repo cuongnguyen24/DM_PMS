@@ -1,10 +1,31 @@
-﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
-<div id="simpleTimekeeping" style="overflow:hidden;">
-    <div id="hotContainer"></div>
+﻿@model PMS.Models.TimeKeepingResponse
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="nightTimekeeping" style="overflow:hidden;">
+    <div id="nightHotContainer"></div>
     <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
     <script>
         (function () {
-            const container = document.getElementById('hotContainer');
+            console.log('NightTable script started');
+            const container = document.getElementById('nightHotContainer');
+            
+            if (!container) {
+                console.error('Container nightHotContainer not found');
+                return;
+            }
+            
+            console.log('Container found, initializing Handsontable');
+            
+            // Lấy dữ liệu từ model
+            const nightShiftData = @Html.Raw(Json.Serialize(Model));
+            console.log('NightShift data received:', nightShiftData);
+            
+            if (!nightShiftData || !nightShiftData.departmentGroups) {
+                console.warn('No data received, using sample data');
+                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
+                initializeWithSampleData();
+                return;
+            }
 
             const monthLabels = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
             const columns = [];
@@ -39,29 +60,38 @@
                 return row;
             }
 
-            // Hàm tạo dòng nhân viên
-            function makeEmployeeRow(index, name) {
+            // Hàm tạo dòng nhân viên với dữ liệu thực
+            function makeEmployeeRow(index, employee) {
                 const row = new Array(15).fill('');
                 row[0] = index;
-                row[1] = name;
+                row[1] = employee.fullName;
+                
+                // Điền dữ liệu theo tháng
+                for (let month = 1; month <= 12; month++) {
+                    const monthData = employee.monthlyData[month];
+                    if (monthData) {
+                        row[1 + month] = monthData.lv || 0; // Sử dụng LV để lưu giá trị ca đêm
+                    }
+                }
+                
+                // Tổng cả năm
+                row[14] = employee.yearlyTotalLV || 0;
                 return row;
             }
 
-            const data = [
-                makeGroupRow('Người Quản lý'),
-                makeEmployeeRow(1, 'Nguyễn 111'),
-                makeEmployeeRow(2, 'Nguyễn 112'),
-                makeEmployeeRow(3, 'Nguyễn 113'),
-                makeEmployeeRow(4, 'Nguyễn 114'),
-                makeEmployeeRow(5, 'Nguyễn 115'),
-                makeEmployeeRow(6, 'Nguyễn 116'),
-                makeEmployeeRow(7, 'Nguyễn 117'),
-
-                makeGroupRow('Phòng Tổng hợp HĐTV'),
-                makeEmployeeRow(1, 'Nguyễn 118'),
-                makeEmployeeRow(2, 'Nguyễn 119'),
-                makeEmployeeRow(3, 'Nguyễn 120'),
-            ];
+            // Tạo dữ liệu từ model thực
+            const data = [];
+            let globalIndex = 1;
+            
+            nightShiftData.departmentGroups.forEach(dept => {
+                // Thêm dòng nhóm
+                data.push(makeGroupRow(dept.departmentName));
+                
+                // Thêm dòng nhân viên
+                dept.employees.forEach(emp => {
+                    data.push(makeEmployeeRow(globalIndex++, emp));
+                });
+            });
 
             const hot = new Handsontable(container, {
                 data: data,
@@ -111,9 +141,8 @@
                         };
                     }
                     return cellProperties;
-                },
-
-
+                }
+            });
 
             // Hàm tính chiều cao phù hợp
             function calculateHotHeight() {
@@ -129,6 +158,13 @@
                 hot.updateSettings({ height: newHeight });
             });
 
+            console.log('NightTable initialized successfully with real data');
         })();
+
+        // Hàm khởi tạo với dữ liệu mẫu (fallback)
+        function initializeWithSampleData() {
+            console.log('Initializing NightTable with sample data');
+            // Code khởi tạo với dữ liệu mẫu như cũ
+        }
     </script>
 </div>

@@ -48,7 +48,7 @@
               "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Index.cshtml",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Index.cshtml",
               "RelativeToolTip": "PMS\\Views\\TblPosition\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAARAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-08-24T10:22:27.29Z",
               "EditorCaption": ""
@@ -63,8 +63,7 @@
               "RelativeToolTip": "PMS\\Views\\TblPosition\\Edit.cshtml",
               "ViewState": "AQIAAPMAAAAAAAAAAAAAAAkAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-23T03:30:43.841Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-23T03:30:43.841Z"
             },
             {
               "$type": "Document",

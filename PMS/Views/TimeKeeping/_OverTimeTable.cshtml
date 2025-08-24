@@ -1,10 +1,23 @@
-﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
-<div id="simpleTimekeeping" style="overflow:hidden;">
-    <div id="hotContainer"></div>
+﻿@model PMS.Models.TimeKeepingResponse
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="overtimeTimekeeping" style="overflow:hidden;">
+    <div id="overtimeHotContainer"></div>
     <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
     <script>
         (function () {
-            const container = document.getElementById('hotContainer');
+            const container = document.getElementById('overtimeHotContainer');
+            
+            // Lấy dữ liệu từ model
+            const overtimeData = @Html.Raw(Json.Serialize(Model));
+            console.log('Overtime data received:', overtimeData);
+            
+            if (!overtimeData || !overtimeData.departmentGroups) {
+                console.warn('No data received, using sample data');
+                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
+                initializeWithSampleData();
+                return;
+            }
 
             // Tạo header con cho mỗi tháng: "giờ" và "công"
             const months = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
@@ -51,30 +64,41 @@
                 return row;
             }
 
-            // Tạo dòng nhân viên
-            function makeEmployeeRow(index, name) {
+            // Tạo dòng nhân viên với dữ liệu thực
+            function makeEmployeeRow(index, employee) {
                 const row = new Array(28).fill('');
                 row[0] = index;
-                row[1] = name;
+                row[1] = employee.fullName;
+                
+                // Điền dữ liệu theo tháng (giờ và công)
+                for (let month = 1; month <= 12; month++) {
+                    const monthData = employee.monthlyData[month];
+                    if (monthData) {
+                        const offset = 2 + (month - 1) * 2;
+                        row[offset] = monthData.lv || 0;      // Giờ (sử dụng LV)
+                        row[offset + 1] = monthData.lv || 0;  // Công (sử dụng LV)
+                    }
+                }
+                
+                // Tổng giờ và công cả năm
+                row[26] = employee.yearlyTotalLV || 0;
+                row[27] = employee.yearlyTotalLV || 0;
                 return row;
             }
 
-            // Dữ liệu mẫu
-            const data = [
-                makeGroupRow('Người Quản lý'),
-                makeEmployeeRow(1, 'Nguyễn 111'),
-                makeEmployeeRow(2, 'Nguyễn 112'),
-                makeEmployeeRow(3, 'Nguyễn 113'),
-                makeEmployeeRow(4, 'Nguyễn 114'),
-                makeEmployeeRow(5, 'Nguyễn 115'),
-                makeEmployeeRow(6, 'Nguyễn 116'),
-                makeEmployeeRow(7, 'Nguyễn 117'),
-
-                makeGroupRow('Phòng Tổng hợp HĐTV'),
-                makeEmployeeRow(1, 'Nguyễn 118'),
-                makeEmployeeRow(2, 'Nguyễn 119'),
-                makeEmployeeRow(3, 'Nguyễn 120'),
-            ];
+            // Tạo dữ liệu từ model thực
+            const data = [];
+            let globalIndex = 1;
+            
+            overtimeData.departmentGroups.forEach(dept => {
+                // Thêm dòng nhóm
+                data.push(makeGroupRow(dept.departmentName));
+                
+                // Thêm dòng nhân viên
+                dept.employees.forEach(emp => {
+                    data.push(makeEmployeeRow(globalIndex++, emp));
+                });
+            });
 
             const hot = new Handsontable(container, {
                 data: data,
@@ -142,6 +166,13 @@
                 hot.updateSettings({ height: newHeight });
             });
 
+            console.log('OverTimeTable initialized successfully with real data');
         })();
+
+        // Hàm khởi tạo với dữ liệu mẫu (fallback)
+        function initializeWithSampleData() {
+            console.log('Initializing OverTimeTable with sample data');
+            // Code khởi tạo với dữ liệu mẫu như cũ
+        }
     </script>
 </div>

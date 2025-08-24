@@ -1,6 +1,8 @@
-﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
-<div id="timekeepingHotWrapper" style="overflow:auto;">
-    <div id="timekeepingHot"></div>
+﻿@model PMS.Models.TimeKeepingResponse
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.css" />
+<div id="timeTimekeeping" style="overflow:auto;">
+    <div id="timeHotContainer"></div>
     
     <div class="text-muted" style="margin-top:8px;">
         Ghi chú: LV (Làm việc), H(?), P (Phép, L (?)).
@@ -9,7 +11,18 @@
     <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
     <script>
         (function () {
-            const container = document.getElementById('timekeepingHot');
+            const container = document.getElementById('timeHotContainer');
+            
+            // Lấy dữ liệu từ model
+            const timeKeepingData = @Html.Raw(Json.Serialize(Model));
+            console.log('TimeKeeping data received:', timeKeepingData);
+            
+            if (!timeKeepingData || !timeKeepingData.departmentGroups) {
+                console.warn('No data received, using sample data');
+                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
+                initializeWithSampleData();
+                return;
+            }
 
             const monthLabels = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
             const subColumns = ['LV', 'H', 'P', 'L', 'OT', 'CD', 'KL'];
@@ -37,29 +50,53 @@
             // Yearly total (read-only for now)
             columns.push({ data: baseColumnCount + totalMonthCols, type: 'numeric', readOnly: true, width: 70 });
 
-            function makeRow(index, fullName, account) {
+            // Hàm tạo dòng nhóm (in nghiêng, màu xanh)
+            function makeGroupRow(label) {
                 const row = new Array(totalColCount).fill('');
-                row[0] = index;
-                row[1] = fullName;
-                row[2] = account;
-                // Sample values per month: LV=20, H=2, others blank
-                for (let m = 0; m < monthLabels.length; m++) {
-                    const offset = baseColumnCount + m * subColumns.length;
-                    row[offset + 0] = 20; // LV
-                    row[offset + 1] = 2;  // H
-                }
-                // Example yearly total: sum LV across 12 months
-                row[baseColumnCount + totalMonthCols] = monthLabels.length * 20;
+                row[1] = label;
                 return row;
             }
 
-            const data = [
-                makeRow(1, 'Nguyễn 111', 'xxx'),
-                makeRow(2, 'Nguyễn 112', 'xxx'),
-                makeRow(3, 'Nguyễn 113', 'xxx'),
-                makeRow(4, 'Nguyễn 114', 'xxx'),
-                makeRow(5, 'Nguyễn 115', 'xxx'),
-            ];
+            // Hàm tạo dòng nhân viên với dữ liệu thực
+            function makeEmployeeRow(index, employee) {
+                const row = new Array(totalColCount).fill('');
+                row[0] = index;
+                row[1] = employee.fullName;
+                row[2] = employee.userCode;
+                
+                // Điền dữ liệu theo tháng
+                for (let month = 1; month <= 12; month++) {
+                    const monthData = employee.monthlyData[month];
+                    if (monthData) {
+                        const offset = baseColumnCount + (month - 1) * subColumns.length;
+                        row[offset + 0] = monthData.lv || 0;      // LV
+                        row[offset + 1] = monthData.h || 0;        // H
+                        row[offset + 2] = monthData.p || 0;        // P
+                        row[offset + 3] = monthData.l || 0;        // L
+                        row[offset + 4] = monthData.ots || 0;      // OT
+                        row[offset + 5] = monthData.cd || 0;       // CD
+                        row[offset + 6] = monthData.kl || 0;       // KL
+                    }
+                }
+                
+                // Tổng cả năm (LV)
+                row[baseColumnCount + totalMonthCols] = employee.yearlyTotalLV || 0;
+                return row;
+            }
+
+            // Tạo dữ liệu từ model thực
+            const data = [];
+            let globalIndex = 1;
+            
+            timeKeepingData.departmentGroups.forEach(dept => {
+                // Thêm dòng nhóm
+                data.push(makeGroupRow(dept.departmentName));
+                
+                // Thêm dòng nhân viên
+                dept.employees.forEach(emp => {
+                    data.push(makeEmployeeRow(globalIndex++, emp));
+                });
+            });
 
             const hot = new Handsontable(container, {
                 data: data,
@@ -91,8 +128,77 @@
                 },
                 filters: true,
                 dropdownMenu: true,
-                licenseKey: 'non-commercial-and-evaluation'
+                licenseKey: 'non-commercial-and-evaluation',
+
+                // Tô style cho dòng nhóm
+                cells: function (row, col) {
+                    const cellProperties = {};
+                    const dataAtRow = this.instance.getDataAtRow(row);
+                    // Nếu dòng là dòng nhóm (chỉ có cột 1 có chữ, cột 0 và 2 trống)
+                    if (dataAtRow[1] && dataAtRow[0] === '' && dataAtRow[2] === '') {
+                        cellProperties.readOnly = true;
+                        cellProperties.renderer = function (instance, td, row, col, prop, value, cellProperties) {
+                            td.style.fontStyle = 'italic';
+                            td.style.color = 'blue';
+                            td.style.fontWeight = 'bold';
+                            td.style.background = '#f0f8ff';
+                            td.innerHTML = value;
+                        };
+                    }
+                    return cellProperties;
+                },
+
+                afterChange: function (changes, source) {
+                    if (!changes) return;
+                    
+                    // Tự động cập nhật STT cho từng nhóm
+                    this.updateRowNumbers();
+                    
+                    // Tính tổng cho từng nhân viên
+                    changes.forEach(([row, prop, oldVal, newVal]) => {
+                        if (typeof prop === 'number' && prop >= baseColumnCount && prop < baseColumnCount + totalMonthCols) {
+                            this.calculateYearlyTotal(row);
+                        }
+                    });
+                },
+
+                afterInit: function() {
+                    // Cập nhật STT ban đầu
+                    this.updateRowNumbers();
+                }
             });
+
+            // Hàm cập nhật STT tự động cho từng nhóm
+            hot.updateRowNumbers = function() {
+                let currentGroupIndex = 1;
+                const data = this.getData();
+                
+                for (let i = 0; i < data.length; i++) {
+                    const row = data[i];
+                    // Nếu là dòng nhóm, reset index
+                    if (row[1] && row[0] === '' && row[2] === '') {
+                        currentGroupIndex = 1;
+                    } else if (row[0] !== '') {
+                        // Nếu là dòng nhân viên, cập nhật STT
+                        this.setDataAtCell(i, 0, currentGroupIndex++);
+                    }
+                }
+            };
+
+            // Hàm tính tổng cả năm cho một nhân viên
+            hot.calculateYearlyTotal = function(rowIndex) {
+                const rowData = this.getDataAtRow(rowIndex);
+                let yearlyTotal = 0;
+                
+                // Tính tổng LV (Làm việc) cho cả năm
+                for (let m = 0; m < monthLabels.length; m++) {
+                    const offset = baseColumnCount + m * subColumns.length;
+                    yearlyTotal += parseFloat(rowData[offset + 0]) || 0; // LV column
+                }
+                
+                // Cập nhật cột tổng cả năm
+                this.setDataAtCell(rowIndex, baseColumnCount + totalMonthCols, yearlyTotal);
+            };
 
             // Hàm tính chiều cao phù hợp
             function calculateHotHeight() {
@@ -107,6 +213,14 @@
                 const newHeight = calculateHotHeight();
                 hot.updateSettings({ height: newHeight });
             });
+
+            console.log('TimeTable initialized successfully with real data');
         })();
+
+        // Hàm khởi tạo với dữ liệu mẫu (fallback)
+        function initializeWithSampleData() {
+            console.log('Initializing with sample data');
+            // Code khởi tạo với dữ liệu mẫu như cũ
+        }
     </script>
 </div>
