@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Scripts {
+    <script src="~/js/position-validation-vi.js"></script>
+}
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -45,15 +49,11 @@
                                             <dd class="col-sm-8">
                                                 @if (Model.TypeObject == 1)
                                                 {
-                                                    <span class="badge badge-info">Nhân viên</span>
+                                                    <span class="badge badge-info">Nhà quản lý</span>
                                                 }
                                                 else if (Model.TypeObject == 2)
                                                 {
-                                                    <span class="badge badge-warning">Quản lý</span>
-                                                }
-                                                else if (Model.TypeObject == 3)
-                                                {
-                                                    <span class="badge badge-primary">Cấp cao</span>
+                                                    <span class="badge badge-warning">Người lao động</span>
                                                 }
                                                 else
                                                 {

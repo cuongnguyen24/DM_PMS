@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PMS.Models.TblPosition>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "DANH MỤC CHỨC VỤ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,6 +15,13 @@
                     </div>
                     <div class="col-lg-3 objRight">
                         <a href="@Url.Action("Create")" class="btn btn-sm btn-success">Thêm mới</a>
+                    </div>
+                </div>
+
+                <!-- Thêm dòng hiển thị tổng số bản ghi -->
+                <div class="row mb-3">
+                    <div class="col-12 text-right">
+                        <span class="text-info font-weight-bold">Tổng số: @Model.Count() bản ghi</span>
                     </div>
                 </div>
 
@@ -88,13 +95,16 @@
     @Html.AntiForgeryToken()
 </form>
 
-<script>
-    function confirmDeactivate(id, name) {
-        if (confirm('Bạn có chắc chắn muốn đổi trạng thái của chức vụ "' + name + '" sang hết hiệu lực không?')) {
-            var form = document.getElementById('deactivateForm');
-            form.action = '@Url.Action("Deactivate", "TblPosition")/' + id;
-            form.submit();
+@section Scripts {
+    <script src="~/js/position-validation-vi.js"></script>
+    <script>
+        function confirmDeactivate(id, name) {
+            if (confirm('Bạn có chắc chắn muốn đổi trạng thái của chức vụ "' + name + '" sang hết hiệu lực không?')) {
+                var form = document.getElementById('deactivateForm');
+                form.action = '@Url.Action("Deactivate", "TblPosition")/' + id;
+                form.submit();
+            }
         }
-    }
-</script>
+    </script>
+}
 

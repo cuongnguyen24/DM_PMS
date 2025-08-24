@@ -41,8 +41,10 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ShortName" class="control-label font-weight-bold mb-1">Tên viết tắt</label>
-                                    <input asp-for="ShortName" class="form-control" placeholder="Nhập tên viết tắt chức vụ" />
+                                    <label asp-for="ShortName" class="control-label font-weight-bold mb-1">
+                                        Tên viết tắt <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="ShortName" class="form-control" placeholder="Nhập tên viết tắt chức vụ" required />
                                     <span asp-validation-for="ShortName" class="text-danger"></span>
                                 </div>
                             </div>
@@ -184,6 +186,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
+    <script src="~/js/position-validation-vi.js"></script>
     <script>
         $(document).ready(function () {
             // Initialize date picker
@@ -264,27 +267,6 @@
                 if (positionName !== '') {
                     checkPositionExists(positionName, false);
                 }
-            });
-            
-            // Form validation
-            $('#editForm').on('submit', function(e) {
-                var positionName = $('#Name').val().trim();
-                
-                if (positionName === '') {
-                    alert('Vui lòng nhập tên chức vụ!');
-                    e.preventDefault();
-                    return false;
-                }
-                
-                // Check validation (exclude current record)
-                var isValidationPassed = checkPositionExists(positionName, true);
-                
-                if (!isValidationPassed) {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                return true;
             });
         });
     </script>
