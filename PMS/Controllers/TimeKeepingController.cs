@@ -21,9 +21,6 @@ namespace PMS.Controllers
 
         public async Task<IActionResult> RenderLoaiCong(string loai, int nam, int quy = 0)
         {
-            // Log để debug
-            System.Diagnostics.Debug.WriteLine($"RenderLoaiCong called with loai: {loai}, nam: {nam}, quy: {quy}");
-            
             var request = new TimeKeepingRequest
             {
                 Year = nam,
@@ -58,9 +55,50 @@ namespace PMS.Controllers
             }
             catch (System.Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error in RenderLoaiCong: {ex.Message}");
                 // Trả về partial view mặc định nếu có lỗi
                 return PartialView("_TimeTable");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTimeKeeping([FromBody] UpdateTimeKeepingRequest request)
+        {
+            try
+            {
+                var result = await _timeKeepingService.UpdateTimeKeepingAsync(request);
+                return Json(new { success = result.Success, message = result.Message });
+            }
+            catch (System.Exception ex)
+            {
+                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật dữ liệu." });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateNightShift([FromBody] UpdateNightShiftRequest request)
+        {
+            try
+            {
+                var result = await _timeKeepingService.UpdateNightShiftAsync(request);
+                return Json(new { success = result.Success, message = result.Message });
+            }
+            catch (System.Exception ex)
+            {
+                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật dữ liệu ca đêm." });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateOvertime([FromBody] UpdateOvertimeRequest request)
+        {
+            try
+            {
+                var result = await _timeKeepingService.UpdateOvertimeAsync(request);
+                return Json(new { success = result.Success, message = result.Message });
+            }
+            catch (System.Exception ex)
+            {
+                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật dữ liệu thêm giờ." });
             }
         }
     }

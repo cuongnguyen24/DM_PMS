@@ -25,5 +25,20 @@ namespace PMS.Services
         /// Lấy danh sách nhóm phòng ban
         /// </summary>
         Task<List<DepartmentGroup>> GetDepartmentGroupsAsync();
+
+        /// <summary>
+        /// Cập nhật dữ liệu chấm công theo thời gian
+        /// </summary>
+        Task<UpdateResponse> UpdateTimeKeepingAsync(UpdateTimeKeepingRequest request);
+
+        /// <summary>
+        /// Cập nhật dữ liệu ca đêm
+        /// </summary>
+        Task<UpdateResponse> UpdateNightShiftAsync(UpdateNightShiftRequest request);
+
+        /// <summary>
+        /// Cập nhật dữ liệu thêm giờ
+        /// </summary>
+        Task<UpdateResponse> UpdateOvertimeAsync(UpdateOvertimeRequest request);
     }
 }

@@ -81,4 +81,38 @@ namespace PMS.Models
         public string Message { get; set; }
         public bool Success { get; set; }
     }
+
+    // Models cho Update Requests
+    public class UpdateTimeKeepingRequest
+    {
+        public int UserId { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public string FieldType { get; set; } // "LV", "H", "P", "L", "OTS", "CD", "KL"
+        public decimal? Value { get; set; }
+    }
+
+    public class UpdateNightShiftRequest
+    {
+        public int UserId { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public decimal? Value { get; set; }
+    }
+
+    public class UpdateOvertimeRequest
+    {
+        public int UserId { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public decimal? Value { get; set; }
+    }
+
+    // Model cho Update Response
+    public class UpdateResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public object Data { get; set; }
+    }
 }

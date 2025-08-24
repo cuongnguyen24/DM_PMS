@@ -329,5 +329,189 @@ namespace PMS.Services
                 return new List<DepartmentGroup>();
             }
         }
+
+        public async Task<UpdateResponse> UpdateTimeKeepingAsync(UpdateTimeKeepingRequest request)
+        {
+            try
+            {
+                // Tìm hoặc tạo bản ghi TimeKeeping
+                var timeKeeping = await _context.TblTimeKeepings
+                    .FirstOrDefaultAsync(tk => tk.UserId == request.UserId 
+                                            && tk.Month == request.Month 
+                                            && tk.Year == request.Year);
+
+                if (timeKeeping == null)
+                {
+                    // Tạo bản ghi mới
+                    timeKeeping = new TblTimeKeeping
+                    {
+                        UserId = request.UserId,
+                        Month = request.Month,
+                        Year = request.Year,
+                        Status = 1,
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "System",
+                        ModifiedDate = DateTime.Now,
+                        ModifiedUser = "System"
+                    };
+                    _context.TblTimeKeepings.Add(timeKeeping);
+                }
+
+                // Cập nhật field tương ứng
+                switch (request.FieldType.ToUpper())
+                {
+                    case "LV":
+                        timeKeeping.Lv = request.Value;
+                        break;
+                    case "H":
+                        timeKeeping.H = request.Value;
+                        break;
+                    case "P":
+                        timeKeeping.P = request.Value;
+                        break;
+                    case "L":
+                        timeKeeping.L = request.Value;
+                        break;
+                    case "OTS":
+                        timeKeeping.Ots = request.Value;
+                        break;
+                    case "CD":
+                        timeKeeping.Cd = request.Value;
+                        break;
+                    case "KL":
+                        timeKeeping.Kl = request.Value;
+                        break;
+                    default:
+                        return new UpdateResponse
+                        {
+                            Success = false,
+                            Message = $"Field type '{request.FieldType}' không hợp lệ."
+                        };
+                }
+
+                timeKeeping.ModifiedDate = DateTime.Now;
+                timeKeeping.ModifiedUser = "System";
+
+                await _context.SaveChangesAsync();
+
+                return new UpdateResponse
+                {
+                    Success = true,
+                    Message = "Cập nhật dữ liệu thành công."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi khi cập nhật dữ liệu: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<UpdateResponse> UpdateNightShiftAsync(UpdateNightShiftRequest request)
+        {
+            try
+            {
+                // Tìm hoặc tạo bản ghi NightShift
+                var nightShift = await _context.TblNightShifts
+                    .FirstOrDefaultAsync(ns => ns.UserId == request.UserId 
+                                            && ns.Month == request.Month 
+                                            && ns.Year == request.Year);
+
+                if (nightShift == null)
+                {
+                    // Tạo bản ghi mới
+                    nightShift = new TblNightShift
+                    {
+                        UserId = request.UserId,
+                        Month = request.Month,
+                        Year = request.Year,
+                        Value = request.Value,
+                        Status = 1,
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "System",
+                        ModifiedDate = DateTime.Now,
+                        ModifiedUser = "System"
+                    };
+                    _context.TblNightShifts.Add(nightShift);
+                }
+                else
+                {
+                    nightShift.Value = request.Value;
+                    nightShift.ModifiedDate = DateTime.Now;
+                    nightShift.ModifiedUser = "System";
+                }
+
+                await _context.SaveChangesAsync();
+
+                return new UpdateResponse
+                {
+                    Success = true,
+                    Message = "Cập nhật dữ liệu ca đêm thành công."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi khi cập nhật dữ liệu ca đêm: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<UpdateResponse> UpdateOvertimeAsync(UpdateOvertimeRequest request)
+        {
+            try
+            {
+                // Tìm hoặc tạo bản ghi Overtime
+                var overtime = await _context.TblOvertimes
+                    .FirstOrDefaultAsync(ot => ot.UserId == request.UserId 
+                                            && ot.Month == request.Month 
+                                            && ot.Year == request.Year);
+
+                if (overtime == null)
+                {
+                    // Tạo bản ghi mới
+                    overtime = new TblOvertime
+                    {
+                        UserId = request.UserId,
+                        Month = request.Month,
+                        Year = request.Year,
+                        Value = request.Value,
+                        Status = 1,
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "System",
+                        ModifiedDate = DateTime.Now,
+                        ModifiedUser = "System"
+                    };
+                    _context.TblOvertimes.Add(overtime);
+                }
+                else
+                {
+                    overtime.Value = request.Value;
+                    overtime.ModifiedDate = DateTime.Now;
+                    overtime.ModifiedUser = "System";
+                }
+
+                await _context.SaveChangesAsync();
+
+                return new UpdateResponse
+                {
+                    Success = true,
+                    Message = "Cập nhật dữ liệu thêm giờ thành công."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi khi cập nhật dữ liệu thêm giờ: {ex.Message}"
+                };
+            }
+        }
     }
 }

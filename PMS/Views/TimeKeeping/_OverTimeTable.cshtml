@@ -10,12 +10,8 @@
             
             // Lấy dữ liệu từ model
             const overtimeData = @Html.Raw(Json.Serialize(Model));
-            console.log('Overtime data received:', overtimeData);
             
             if (!overtimeData || !overtimeData.departmentGroups) {
-                console.warn('No data received, using sample data');
-                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
-                initializeWithSampleData();
                 return;
             }
 
@@ -116,40 +112,66 @@
                 dropdownMenu: true,
                 licenseKey: 'non-commercial-and-evaluation',
 
-                // Tô style cho dòng nhóm
-                cells: function (row, col) {
-                    const cellProperties = {};
-                    const dataAtRow = this.instance.getDataAtRow(row);
-                    // Nếu dòng là dòng nhóm (chỉ có cột 1 có chữ)
-                    if (dataAtRow[1] && dataAtRow[0] === '') {
-                        cellProperties.readOnly = true;
-                        cellProperties.renderer = function (instance, td, row, col, prop, value, cellProperties) {
-                            td.style.fontStyle = 'italic';
-                            td.style.color = 'blue';
-                            td.style.fontWeight = 'bold';
-                            td.style.background = '#f0f8ff';
-                            td.innerHTML = value;
-                        };
-                    }
-                    return cellProperties;
-                },
-
-                afterChange: function (changes, source) {
-                    if (!changes) return;
-                    changes.forEach(([row, prop, oldVal, newVal]) => {
-                        // Tính tổng giờ và tổng công cho mỗi nhân viên
-                        if (typeof prop === 'number' && prop >= 2 && prop <= 25) {
-                            const rowData = this.getDataAtRow(row);
-                            let totalHours = 0, totalCong = 0;
-                            for (let i = 2; i <= 25; i += 2) {
-                                totalHours += parseFloat(rowData[i]) || 0;
-                                totalCong += parseFloat(rowData[i + 1]) || 0;
-                            }
-                            this.setDataAtCell(row, 26, totalHours);
-                            this.setDataAtCell(row, 27, totalCong);
-                        }
-                    });
+                            // Tô style cho dòng nhóm
+            cells: function (row, col) {
+                const cellProperties = {};
+                const dataAtRow = this.instance.getDataAtRow(row);
+                // Nếu dòng là dòng nhóm (chỉ có cột 1 có chữ)
+                if (dataAtRow[1] && dataAtRow[0] === '') {
+                    cellProperties.readOnly = true;
+                    cellProperties.renderer = function (instance, td, row, col, prop, value, cellProperties) {
+                        td.style.fontStyle = 'italic';
+                        td.style.color = 'blue';
+                        td.style.fontWeight = 'bold';
+                        td.style.background = '#f0f8ff';
+                        td.innerHTML = value;
+                    };
                 }
+                return cellProperties;
+            },
+
+            afterChange: function (changes, source) {
+                if (!changes || source === 'loadData') return;
+                
+                const instance = this;
+                
+                // Xử lý từng thay đổi
+                changes.forEach(([row, prop, oldVal, newVal]) => {
+                    if (typeof prop === 'number' && prop >= 2 && prop <= 13) { // Cột tháng 1-12
+                        // Cập nhật database
+                        const rowData = instance.getDataAtRow(row);
+                        
+                        // Kiểm tra nếu đây là dòng nhân viên (không phải dòng group)
+                        if (rowData[0] !== '' && rowData[1] && rowData[1] !== 'Người Quản lý' && rowData[1] !== 'Phòng tổng hợp HĐTV') { // OverTimeTable không có userCode column
+                            // Tìm userId từ data gốc
+                            const employeeName = rowData[1];
+                            
+                            // Tìm userId từ overtimeData
+                            let userId = null;
+                            overtimeData.departmentGroups.forEach(dept => {
+                                dept.employees.forEach(emp => {
+                                    if (emp.fullName === employeeName) {
+                                        userId = emp.userId;
+                                    }
+                                });
+                            });
+                            
+                            if (userId) {
+                                // Tính tháng từ column index  
+                                const monthIndex = prop - 1; // prop 2 → month 1, prop 3 → month 2, ...
+                                
+                                // Lấy năm hiện tại từ filter
+                                const currentYear = parseInt($('#selectYear').val()) || new Date().getFullYear();
+                                
+
+                                
+                                // Gọi API cập nhật
+                                updateOvertimeData(userId, monthIndex, currentYear, newVal);
+                            }
+                        }
+                    }
+                });
+            }
             });
 
             // Hàm tính chiều cao phù hợp
@@ -166,13 +188,64 @@
                 hot.updateSettings({ height: newHeight });
             });
 
-            console.log('OverTimeTable initialized successfully with real data');
+
         })();
+
+        // Hàm cập nhật dữ liệu Overtime
+        function updateOvertimeData(userId, month, year, value) {
+            const requestData = {
+                userId: userId,
+                month: month,
+                year: year,
+                value: parseFloat(value) || 0
+            };
+
+            $.ajax({
+                url: '/TimeKeeping/UpdateOvertime',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    if (response.success) {
+                        showUpdateNotification('success', 'Đã cập nhật thêm giờ!');
+                        // Không reload tự động để tránh interrupt việc nhập liệu
+                        // User có thể F5 để refresh nếu cần
+                    } else {
+                        showUpdateNotification('error', response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showUpdateNotification('error', 'Lỗi kết nối: ' + error);
+                }
+            });
+        }
+
+        // Hàm hiển thị thông báo cập nhật
+        function showUpdateNotification(type, message) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            
+            const notification = $(`
+                <div class="alert ${alertClass} alert-dismissible fade show update-notification" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                    <i class="fa ${icon}"></i> ${message}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            `);
+            
+            $('body').append(notification);
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                notification.alert('close');
+            }, 3000);
+        }
 
         // Hàm khởi tạo với dữ liệu mẫu (fallback)
         function initializeWithSampleData() {
-            console.log('Initializing OverTimeTable with sample data');
-            // Code khởi tạo với dữ liệu mẫu như cũ
+            document.getElementById('overtimeHotContainer').innerHTML = '<div class="alert alert-info">Không có dữ liệu thêm giờ để hiển thị.</div>';
         }
+
     </script>
 </div>

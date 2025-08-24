@@ -230,11 +230,7 @@
                         __RequestVerificationToken: $('[name=__RequestVerificationToken]').val()
                     },
                     async: false,
-                    beforeSend: function() {
-                        console.log('Checking position exists:', positionName, 'excluding ID:', currentId);
-                    },
                     success: function(result) {
-                        console.log('Check result:', result);
                         if (result.exists && result.isActive) {
                             var errorMsg = 'Chức vụ "' + positionName + '" đã tồn tại và đang hoạt động. Vui lòng đặt tên chức vụ khác hoặc hết hiệu lực chức vụ hiện tại trước!';
                             $('#customValidationError').html(errorMsg).show();
@@ -248,9 +244,6 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error);
-                        console.error('Status:', status);
-                        console.error('Response:', xhr.responseText);
                         if (isFormSubmit) {
                             alert('Có lỗi xảy ra khi kiểm tra chức vụ. Vui lòng thử lại!');
                         }

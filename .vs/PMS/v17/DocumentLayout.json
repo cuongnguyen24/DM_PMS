@@ -3,6 +3,26 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\timekeeping\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timekeeping\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\timekeeping\\_nighttable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timekeeping\\_nighttable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\timekeeping\\_overtimetable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timekeeping\\_overtimetable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\timekeeping\\_timetable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\timekeeping\\_timetable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\electricalsafety\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\electricalsafety\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|c:\\users\\admin\\source\\repos\\dm_pms-master\\dm_pms-master\\pms\\views\\tblposition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D5C520A2-2E45-45A2-9733-46C17B531AC2}|PMS\\PMS.csproj|solutionrelative:pms\\views\\tblposition\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -44,6 +64,71 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\Index.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TimeKeeping\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\Index.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TimeKeeping\\Index.cshtml",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-24T12:02:25.653Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_NightTable.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_NightTable.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TimeKeeping\\_NightTable.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_NightTable.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TimeKeeping\\_NightTable.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-24T12:00:55.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_OverTimeTable.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_OverTimeTable.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TimeKeeping\\_OverTimeTable.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_OverTimeTable.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TimeKeeping\\_OverTimeTable.cshtml",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAA4AAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-24T12:00:35.379Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\ElectricalSafety\\Index.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\ElectricalSafety\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\ElectricalSafety\\Index.cshtml",
+              "RelativeToolTip": "PMS\\Views\\ElectricalSafety\\Index.cshtml",
+              "ViewState": "AQIAAIQAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-24T11:59:41.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_TimeTable.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_TimeTable.cshtml",
+              "RelativeDocumentMoniker": "PMS\\Views\\TimeKeeping\\_TimeTable.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TimeKeeping\\_TimeTable.cshtml",
+              "RelativeToolTip": "PMS\\Views\\TimeKeeping\\_TimeTable.cshtml",
+              "ViewState": "AQIAAP8AAAAAAAAAAAAAAGkBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-24T11:59:17.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Index.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Index.cshtml",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Index.cshtml",
@@ -55,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Edit.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Edit.cshtml",
@@ -67,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "TblBaseSalariesController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblBaseSalariesController.cs",
               "RelativeDocumentMoniker": "PMS\\Controllers\\TblBaseSalariesController.cs",
@@ -79,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "TblPositionController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Controllers\\TblPositionController.cs",
               "RelativeDocumentMoniker": "PMS\\Controllers\\TblPositionController.cs",
@@ -91,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\Shared\\_Layout.cshtml",
@@ -103,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblBaseSalaries\\Create.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblBaseSalaries\\Create.cshtml",
@@ -115,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\DM_PMS-master\\DM_PMS-master\\PMS\\Views\\TblPosition\\Create.cshtml",
               "RelativeDocumentMoniker": "PMS\\Views\\TblPosition\\Create.cshtml",

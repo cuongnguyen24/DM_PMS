@@ -15,17 +15,16 @@
             
             // Lấy dữ liệu từ model
             const timeKeepingData = @Html.Raw(Json.Serialize(Model));
-            console.log('TimeKeeping data received:', timeKeepingData);
-            
             if (!timeKeepingData || !timeKeepingData.departmentGroups) {
-                console.warn('No data received, using sample data');
-                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
-                initializeWithSampleData();
                 return;
             }
 
+            // State management để tránh multiple triggers
+            let isUpdating = false;
+            let updateTimeout = null;
+
             const monthLabels = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
-            const subColumns = ['LV', 'H', 'P', 'L', 'OT', 'CD', 'KL'];
+            const subColumns = ['LV', 'H', 'P', 'L', 'OTS', 'CD', 'KL'];
 
             // Nested headers: 2 rows
             const nestedHeaders = [
@@ -149,22 +148,86 @@
                 },
 
                 afterChange: function (changes, source) {
-                    if (!changes) return;
+                    if (!changes || source === 'loadData' || isUpdating) return;
                     
-                    // Tự động cập nhật STT cho từng nhóm
-                    this.updateRowNumbers();
+                    const instance = this;
                     
-                    // Tính tổng cho từng nhân viên
-                    changes.forEach(([row, prop, oldVal, newVal]) => {
-                        if (typeof prop === 'number' && prop >= baseColumnCount && prop < baseColumnCount + totalMonthCols) {
-                            this.calculateYearlyTotal(row);
+                    // Clear previous timeout
+                    if (updateTimeout) {
+                        clearTimeout(updateTimeout);
+                    }
+                    
+                    // Debounce updates để tránh multiple calls
+                    updateTimeout = setTimeout(() => {
+                        isUpdating = true;
+                        
+                        try {
+                            // Tự động cập nhật STT cho từng nhóm
+                            if (typeof instance.updateRowNumbers === 'function') {
+                                instance.updateRowNumbers();
+                            }
+                            
+                            // Xử lý từng thay đổi
+                            changes.forEach(([row, prop, oldVal, newVal]) => {
+                                // Chỉ process nếu oldVal !== newVal để tránh infinite loop
+                                if (oldVal === newVal) return;
+                                
+                                if (typeof prop === 'number' && prop >= baseColumnCount && prop < baseColumnCount + totalMonthCols) {
+                                    // Tính tổng cho từng nhân viên
+                                    if (typeof instance.calculateYearlyTotal === 'function') {
+                                        instance.calculateYearlyTotal(row);
+                                    }
+                                    
+                                    // Cập nhật database
+                                    const rowData = instance.getDataAtRow(row);
+                                    
+                                    // Kiểm tra nếu đây là dòng nhân viên (không phải dòng group)
+                                    if (rowData[0] !== '' && rowData[1] && rowData[2] !== '') {
+                                        // Tìm userId từ data gốc
+                                        const employeeName = rowData[1];
+                                        const userCode = rowData[2];
+                                        
+                                        // Tìm userId từ timeKeepingData
+                                        let userId = null;
+                                        timeKeepingData.departmentGroups.forEach(dept => {
+                                            dept.employees.forEach(emp => {
+                                                if (emp.fullName === employeeName && emp.userCode === userCode) {
+                                                    userId = emp.userId;
+                                                }
+                                            });
+                                        });
+                                        
+                                        if (userId) {
+                                            // Tính tháng và field type từ column index
+                                            const monthIndex = Math.floor((prop - baseColumnCount) / subColumns.length) + 1;
+                                            const fieldIndex = (prop - baseColumnCount) % subColumns.length;
+                                            const fieldType = subColumns[fieldIndex]; // 'LV', 'H', 'P', 'L', 'OTS', 'CD', 'KL'
+                                            
+                                            // Lấy năm hiện tại từ filter
+                                            const currentYear = parseInt($('#selectYear').val()) || new Date().getFullYear();
+                                            
+                                            
+                                            
+                                            // Gọi API cập nhật
+                                            updateTimeKeepingData(userId, monthIndex, currentYear, fieldType, newVal);
+                                        }
+                                    }
+                                }
+                            });
+                        } finally {
+                            // Reset flag sau khi hoàn thành
+                            setTimeout(() => {
+                                isUpdating = false;
+                            }, 100);
                         }
-                    });
+                    }, 300); // Debounce 300ms
                 },
 
                 afterInit: function() {
                     // Cập nhật STT ban đầu
-                    this.updateRowNumbers();
+                    if (typeof this.updateRowNumbers === 'function') {
+                        this.updateRowNumbers();
+                    }
                 }
             });
 
@@ -214,13 +277,87 @@
                 hot.updateSettings({ height: newHeight });
             });
 
-            console.log('TimeTable initialized successfully with real data');
+                    // Hàm cập nhật dữ liệu TimeKeeping
+        function updateTimeKeepingData(userId, month, year, fieldType, value) {
+            try {
+                const requestData = {
+                    userId: userId,
+                    month: month,
+                    year: year,
+                    fieldType: fieldType,
+                    value: parseFloat(value) || 0
+                };
+
+                $.ajax({
+                    url: '/TimeKeeping/UpdateTimeKeeping',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    timeout: 10000,
+                    success: function(response) {
+                        if (response && response.success) {
+                            showUpdateNotification('success', 'Đã cập nhật!');
+                        } else {
+                            showUpdateNotification('error', response ? response.message : 'Lỗi không xác định');
+                        }
+                        isUpdating = false;
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = 'Lỗi kết nối';
+                        if (xhr.responseText) {
+                            try {
+                                const errorResponse = JSON.parse(xhr.responseText);
+                                errorMessage = errorResponse.message || errorMessage;
+                            } catch (e) {
+                                errorMessage = xhr.responseText.substring(0, 100);
+                            }
+                        }
+                        showUpdateNotification('error', errorMessage + ': ' + error);
+                        isUpdating = false;
+                    }
+                });
+            } catch (error) {
+                showUpdateNotification('error', 'Lỗi JavaScript: ' + error.message);
+                isUpdating = false;
+            }
+        }
+
+            // Hàm hiển thị thông báo cập nhật
+            function showUpdateNotification(type, message) {
+                try {
+                    const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+                    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+                    
+                    const notification = $(`
+                        <div class="alert ${alertClass} alert-dismissible fade show update-notification" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 99999; min-width: 300px; max-width: 400px;">
+                            <i class="fa ${icon}"></i> ${message}
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    
+                    $('body').append(notification);
+                    
+                    setTimeout(() => {
+                        try {
+                            notification.alert('close');
+                        } catch (e) {
+                            notification.remove();
+                        }
+                    }, 3000);
+                } catch (error) {
+                    alert(message);
+                }
+            }
+
         })();
 
         // Hàm khởi tạo với dữ liệu mẫu (fallback)
         function initializeWithSampleData() {
-            console.log('Initializing with sample data');
-            // Code khởi tạo với dữ liệu mẫu như cũ
+            document.getElementById('timeHotContainer').innerHTML = '<div class="alert alert-info">Không có dữ liệu để hiển thị.</div>';
         }
+
+
     </script>
 </div>

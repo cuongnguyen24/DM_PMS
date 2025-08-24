@@ -6,24 +6,16 @@
     <script src="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.full.min.js"></script>
     <script>
         (function () {
-            console.log('NightTable script started');
             const container = document.getElementById('nightHotContainer');
             
             if (!container) {
-                console.error('Container nightHotContainer not found');
                 return;
             }
             
-            console.log('Container found, initializing Handsontable');
-            
             // Lấy dữ liệu từ model
             const nightShiftData = @Html.Raw(Json.Serialize(Model));
-            console.log('NightShift data received:', nightShiftData);
             
             if (!nightShiftData || !nightShiftData.departmentGroups) {
-                console.warn('No data received, using sample data');
-                // Sử dụng dữ liệu mẫu nếu không có dữ liệu thực
-                initializeWithSampleData();
                 return;
             }
 
@@ -141,6 +133,48 @@
                         };
                     }
                     return cellProperties;
+                },
+
+                afterChange: function (changes, source) {
+                    if (!changes || source === 'loadData') return;
+                    
+                    const instance = this;
+                    
+                    // Xử lý từng thay đổi
+                    changes.forEach(([row, prop, oldVal, newVal]) => {
+                        if (typeof prop === 'number' && prop >= 2 && prop <= 13) { // Cột tháng 1-12
+                            // Cập nhật database
+                            const rowData = instance.getDataAtRow(row);
+                            
+                            // Kiểm tra nếu đây là dòng nhân viên (không phải dòng group)
+                            if (rowData[0] !== '' && rowData[1] && rowData[1] !== 'Người Quản lý' && rowData[1] !== 'Phòng tổng hợp HĐTV') { // NightTable không có userCode column
+                                // Tìm userId từ data gốc
+                                const employeeName = rowData[1];
+                                
+                                // Tìm userId từ nightShiftData
+                                let userId = null;
+                                nightShiftData.departmentGroups.forEach(dept => {
+                                    dept.employees.forEach(emp => {
+                                        if (emp.fullName === employeeName) {
+                                            userId = emp.userId;
+                                        }
+                                    });
+                                });
+                                
+                                if (userId) {
+                                    // Tính tháng từ column index  
+                                    const monthIndex = prop - 1; // prop 2 → month 1, prop 3 → month 2, ...
+                                    
+                                    // Lấy năm hiện tại từ filter
+                                    const currentYear = parseInt($('#selectYear').val()) || new Date().getFullYear();
+
+                                    
+                                    // Gọi API cập nhật
+                                    updateNightShiftData(userId, monthIndex, currentYear, newVal);
+                                }
+                            }
+                        }
+                    });
                 }
             });
 
@@ -158,13 +192,66 @@
                 hot.updateSettings({ height: newHeight });
             });
 
-            console.log('NightTable initialized successfully with real data');
+
         })();
+
+        // Hàm cập nhật dữ liệu NightShift
+        function updateNightShiftData(userId, month, year, value) {
+            const requestData = {
+                userId: userId,
+                month: month,
+                year: year,
+                value: parseFloat(value) || 0
+            };
+
+            $.ajax({
+                url: '/TimeKeeping/UpdateNightShift',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    if (response.success) {
+                        showUpdateNotification('success', 'Đã cập nhật ca đêm!');
+                        // Không reload tự động để tránh interrupt việc nhập liệu
+                        // User có thể F5 để refresh nếu cần
+                    } else {
+                        showUpdateNotification('error', response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showUpdateNotification('error', 'Lỗi kết nối: ' + error);
+                }
+            });
+        }
+
+        // Hàm hiển thị thông báo cập nhật
+        function showUpdateNotification(type, message) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            
+            const notification = $(`
+                <div class="alert ${alertClass} alert-dismissible fade show update-notification" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                    <i class="fa ${icon}"></i> ${message}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            `);
+            
+            $('body').append(notification);
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                notification.alert('close');
+            }, 3000);
+        }
 
         // Hàm khởi tạo với dữ liệu mẫu (fallback)
         function initializeWithSampleData() {
-            console.log('Initializing NightTable with sample data');
-            // Code khởi tạo với dữ liệu mẫu như cũ
+            document.getElementById('nightHotContainer').innerHTML = '<div class="alert alert-info">Không có dữ liệu ca đêm để hiển thị.</div>';
         }
+
+
+
     </script>
 </div>
