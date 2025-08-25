@@ -22,38 +22,38 @@ namespace PMS.Services
             {
                 var response = new TimeKeepingResponse();
                 
-                // Lấy dữ liệu chấm công theo thời gian
-                var timeKeepingQuery = from tk in _context.TblTimeKeepings
-                                      join u in _context.TblUsers on tk.UserId equals u.Id
-                                      join ud in _context.TblUserDepartments on u.Id equals ud.UserId
-                                      join d in _context.TblDepartments on ud.DepartmentId equals d.Id
-                                      join up in _context.TblUserPositions on u.Id equals up.UserId
-                                      join p in _context.TblPositions on up.PositionId equals p.Id
-                                      where tk.Year == request.Year 
-                                            && tk.Status == 1 
-                                            && u.Status == 1
-                                            && ud.Status == 1
-                                            && up.Status == 1
-                                            && p.Status == 1
-                                            && d.Status == 1
-                                      select new
-                                      {
-                                          UserId = u.Id,
-                                          FullName = u.Name,
-                                          UserCode = u.UserCode,
-                                          DepartmentId = d.Id,
-                                          DepartmentName = d.Name,
-                                          ShortName = d.ShortName,
-                                          PositionName = p.Name,
-                                          Month = tk.Month,
-                                          LV = tk.Lv,
-                                          H = tk.H,
-                                          P = tk.P,
-                                          L = tk.L,
-                                          OTS = tk.Ots,
-                                          CD = tk.Cd,
-                                          KL = tk.Kl
-                                      };
+                // Lấy dữ liệu chấm công theo thời gian - LINQ method syntax
+                var timeKeepingQuery = _context.TblTimeKeepings
+                    .Join(_context.TblUsers, tk => tk.UserId, u => u.Id, (tk, u) => new { tk, u })
+                    .Join(_context.TblUserDepartments, x => x.u.Id, ud => ud.UserId, (x, ud) => new { x.tk, x.u, ud })
+                    .Join(_context.TblDepartments, x => x.ud.DepartmentId, d => d.Id, (x, d) => new { x.tk, x.u, x.ud, d })
+                    .Join(_context.TblUserPositions, x => x.u.Id, up => up.UserId, (x, up) => new { x.tk, x.u, x.ud, x.d, up })
+                    .Join(_context.TblPositions, x => x.up.PositionId, p => p.Id, (x, p) => new { x.tk, x.u, x.ud, x.d, x.up, p })
+                    .Where(x => x.tk.Year == request.Year 
+                             && x.tk.Status == 1 
+                             && x.u.Status == 1
+                             && x.ud.Status == 1
+                             && x.up.Status == 1
+                             && x.p.Status == 1
+                             && x.d.Status == 1)
+                    .Select(x => new
+                    {
+                        UserId = x.u.Id,
+                        FullName = x.u.Name,
+                        UserCode = x.u.UserCode,
+                        DepartmentId = x.d.Id,
+                        DepartmentName = x.d.Name,
+                        ShortName = x.d.ShortName,
+                        PositionName = x.p.Name,
+                        Month = x.tk.Month,
+                        LV = x.tk.Lv,
+                        H = x.tk.H,
+                        P = x.tk.P,
+                        L = x.tk.L,
+                        OTS = x.tk.Ots,
+                        CD = x.tk.Cd,
+                        KL = x.tk.Kl
+                    });
 
                 // Lọc theo quý nếu cần
                 if (request.Quarter > 0)
@@ -135,27 +135,27 @@ namespace PMS.Services
             {
                 var response = new TimeKeepingResponse();
                 
-                // Lấy dữ liệu ca đêm
-                var nightShiftQuery = from ns in _context.TblNightShifts
-                                     join u in _context.TblUsers on ns.UserId equals u.Id
-                                     join ud in _context.TblUserDepartments on u.Id equals ud.UserId
-                                     join d in _context.TblDepartments on ud.DepartmentId equals d.Id
-                                     where ns.Year == request.Year 
-                                           && ns.Status == 1 
-                                           && u.Status == 1
-                                           && ud.Status == 1
-                                           && d.Status == 1
-                                     select new
-                                     {
-                                         UserId = u.Id,
-                                         FullName = u.Name,
-                                         UserCode = u.UserCode,
-                                         DepartmentId = d.Id,
-                                         DepartmentName = d.Name,
-                                         ShortName = d.ShortName,
-                                         Month = ns.Month,
-                                         Value = ns.Value
-                                     };
+                // Lấy dữ liệu ca đêm - LINQ method syntax
+                var nightShiftQuery = _context.TblNightShifts
+                    .Join(_context.TblUsers, ns => ns.UserId, u => u.Id, (ns, u) => new { ns, u })
+                    .Join(_context.TblUserDepartments, x => x.u.Id, ud => ud.UserId, (x, ud) => new { x.ns, x.u, ud })
+                    .Join(_context.TblDepartments, x => x.ud.DepartmentId, d => d.Id, (x, d) => new { x.ns, x.u, x.ud, d })
+                    .Where(x => x.ns.Year == request.Year 
+                             && x.ns.Status == 1 
+                             && x.u.Status == 1
+                             && x.ud.Status == 1
+                             && x.d.Status == 1)
+                    .Select(x => new
+                    {
+                        UserId = x.u.Id,
+                        FullName = x.u.Name,
+                        UserCode = x.u.UserCode,
+                        DepartmentId = x.d.Id,
+                        DepartmentName = x.d.Name,
+                        ShortName = x.d.ShortName,
+                        Month = x.ns.Month,
+                        Value = x.ns.Value
+                    });
 
                 // Lọc theo quý nếu cần
                 if (request.Quarter > 0)
@@ -224,27 +224,27 @@ namespace PMS.Services
             {
                 var response = new TimeKeepingResponse();
                 
-                // Lấy dữ liệu thêm giờ
-                var overtimeQuery = from ot in _context.TblOvertimes
-                                   join u in _context.TblUsers on ot.UserId equals u.Id
-                                   join ud in _context.TblUserDepartments on u.Id equals ud.UserId
-                                   join d in _context.TblDepartments on ud.DepartmentId equals d.Id
-                                   where ot.Year == request.Year 
-                                         && ot.Status == 1 
-                                         && u.Status == 1
-                                         && ud.Status == 1
-                                         && d.Status == 1
-                                   select new
-                                   {
-                                       UserId = u.Id,
-                                       FullName = u.Name,
-                                       UserCode = u.UserCode,
-                                       DepartmentId = d.Id,
-                                       DepartmentName = d.Name,
-                                       ShortName = d.ShortName,
-                                       Month = ot.Month,
-                                       Value = ot.Value
-                                   };
+                // Lấy dữ liệu thêm giờ - LINQ method syntax
+                var overtimeQuery = _context.TblOvertimes
+                    .Join(_context.TblUsers, ot => ot.UserId, u => u.Id, (ot, u) => new { ot, u })
+                    .Join(_context.TblUserDepartments, x => x.u.Id, ud => ud.UserId, (x, ud) => new { x.ot, x.u, ud })
+                    .Join(_context.TblDepartments, x => x.ud.DepartmentId, d => d.Id, (x, d) => new { x.ot, x.u, x.ud, d })
+                    .Where(x => x.ot.Year == request.Year 
+                             && x.ot.Status == 1 
+                             && x.u.Status == 1
+                             && x.ud.Status == 1
+                             && x.d.Status == 1)
+                    .Select(x => new
+                    {
+                        UserId = x.u.Id,
+                        FullName = x.u.Name,
+                        UserCode = x.u.UserCode,
+                        DepartmentId = x.d.Id,
+                        DepartmentName = x.d.Name,
+                        ShortName = x.d.ShortName,
+                        Month = x.ot.Month,
+                        Value = x.ot.Value
+                    });
 
                 // Lọc theo quý nếu cần
                 if (request.Quarter > 0)
