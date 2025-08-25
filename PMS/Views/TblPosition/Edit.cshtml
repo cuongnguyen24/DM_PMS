@@ -1,7 +1,7 @@
 @model PMS.Models.TblPosition
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "SỬA CHỨC VỤ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,9 +16,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="card-title mb-0">Chỉnh sửa chức vụ</h4>
-                        <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm">
-                            <i class="fa fa-arrow-left"></i> Quay lại
+                        <h4 class="card-title mb-0 d-none d-md-block">Chỉnh sửa chức vụ</h4>
+                        <h5 class="card-title mb-0 d-md-none">Sửa chức vụ</h5>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm d-sm-none" title="Quay lại">
+                            <i class="fa fa-arrow-left"></i>
                         </a>
                     </div>
                     <hr />
@@ -30,7 +31,7 @@
                         
                         <!-- Row 1: Tên chức vụ và Tên viết tắt -->
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="Name" class="control-label font-weight-bold mb-1">
                                         Tên chức vụ <span class="text-danger">*</span>
@@ -39,7 +40,7 @@
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="ShortName" class="control-label font-weight-bold mb-1">
                                         Tên viết tắt <span class="text-danger">*</span>
@@ -52,7 +53,7 @@
                         
                         <!-- Row 2: Loại đối tượng và Ngày hiệu lực -->
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="TypeObject" class="control-label font-weight-bold mb-2">
                                         Loại đối tượng <span class="text-danger">*</span>
@@ -74,7 +75,7 @@
                                     <span asp-validation-for="TypeObject" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="DateIssued" class="control-label font-weight-bold mb-1">
                                         Ngày hiệu lực <span class="text-danger">*</span>
@@ -130,14 +131,14 @@
                         
                         <!-- Row 4: Mô tả và Ghi chú -->
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="Description" class="control-label font-weight-bold mb-1">Mô tả</label>
                                     <textarea asp-for="Description" class="form-control" rows="3" placeholder="Thông tin mô tả"></textarea>
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="Note" class="control-label font-weight-bold mb-1">Ghi chú</label>
                                     <textarea asp-for="Note" class="form-control" rows="3" placeholder="Nội dung ghi chú"></textarea>
@@ -148,7 +149,7 @@
                         
                         <!-- Row 5: Trạng thái -->
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label asp-for="Status" class="control-label font-weight-bold mb-1">
                                         Trạng thái <span class="text-danger">*</span>
@@ -166,10 +167,16 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary btn-lg mr-2">
+                                    <button type="submit" class="btn btn-primary btn-lg mr-2 d-none d-sm-inline-block">
                                         <i class="fa fa-save"></i> Cập nhật
                                     </button>
-                                    <a asp-action="Index" class="btn btn-success btn-lg">
+                                    <button type="submit" class="btn btn-primary btn-block d-sm-none mb-2">
+                                        <i class="fa fa-save"></i> Cập nhật
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-success btn-lg d-none d-sm-inline-block">
+                                        <i class="fa fa-arrow-left"></i> Quay lại
+                                    </a>
+                                    <a asp-action="Index" class="btn btn-success btn-block d-sm-none">
                                         <i class="fa fa-arrow-left"></i> Quay lại
                                     </a>
                                 </div>

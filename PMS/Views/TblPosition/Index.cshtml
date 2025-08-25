@@ -9,12 +9,18 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="row row-head">
-                    <div class="col-lg-9">
-                        <h4 class="card-title" style="margin-bottom:0px;">Quản lý chức vụ</h4>
+                <div class="row row-head align-items-center">
+                    <div class="col-md-8 col-sm-6 col-6">
+                        <h4 class="card-title mb-0 d-none d-md-block">Quản lý chức vụ</h4>
+                        <h5 class="card-title mb-0 d-md-none">Chức vụ</h5>
                     </div>
-                    <div class="col-lg-3 objRight">
-                        <a href="@Url.Action("Create")" class="btn btn-sm btn-success">Thêm mới</a>
+                    <div class="col-md-4 col-sm-6 col-6 text-right">
+                        <a href="@Url.Action("Create")" class="btn btn-sm btn-success d-none d-sm-inline-block">
+                            <i class="fa fa-plus"></i> Thêm mới
+                        </a>
+                        <a href="@Url.Action("Create")" class="btn btn-sm btn-success d-sm-none" title="Thêm mới">
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -29,16 +35,17 @@
                     <table id="myTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th class="text-nowrap">#</th>
-                                <th>Tên chức vụ</th>
-                                <th>Tên viết tắt</th>
-                                <th>Hệ số cơ bản chức vụ</th>
-                                <th>Hệ số trách nhiệm</th>
-                                <th>Hệ số chức vụ</th>
-                                <th>Ngày hiệu lực</th>
-                                <th>Mô tả</th>
-                                <th>Ghi chú</th>
-                                <th>Thao tác</th>
+                                <th class="text-nowrap" style="min-width: 40px;">#</th>
+                                <th class="d-none d-md-table-cell" style="min-width: 150px;">Tên chức vụ</th>
+                                <th class="d-md-none" style="min-width: 120px;">Chức vụ</th>
+                                <th class="d-none d-lg-table-cell" style="min-width: 80px;">Tên viết tắt</th>
+                                <th class="d-none d-xl-table-cell" style="min-width: 100px;">HS cơ bản</th>
+                                <th class="d-none d-xl-table-cell" style="min-width: 100px;">HS trách nhiệm</th>
+                                <th class="d-none d-lg-table-cell" style="min-width: 100px;">HS chức vụ</th>
+                                <th class="d-none d-md-table-cell" style="min-width: 100px;">Ngày hiệu lực</th>
+                                <th class="d-none d-xl-table-cell" style="min-width: 150px;">Mô tả</th>
+                                <th class="d-none d-xl-table-cell" style="min-width: 120px;">Ghi chú</th>
+                                <th style="min-width: 80px;">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,35 +56,60 @@
                                 {
                                     <tr>
                                         <td>@(i++)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                        <td>
+                                        <!-- Desktop: Tên chức vụ đầy đủ -->
+                                        <td class="d-none d-md-table-cell">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <!-- Mobile: Tên chức vụ rút gọn + thông tin bổ sung -->
+                                        <td class="d-md-none">
+                                            <div class="font-weight-bold">@Html.DisplayFor(modelItem => item.Name)</div>
+                                            <small class="text-muted">
+                                                @Html.DisplayFor(modelItem => item.ShortName) | 
+                                                @item.DateIssued.ToString("dd/MM/yyyy")
+                                            </small>
+                                        </td>
+                                        <td class="d-none d-lg-table-cell">
                                             @Html.DisplayFor(modelItem => item.ShortName)
                                         </td>
-                                        <td>
+                                        <td class="d-none d-xl-table-cell">
                                             @Html.DisplayFor(modelItem => item.BasicPosiontConfficient)
                                         </td>
-                                        <td>
+                                        <td class="d-none d-xl-table-cell">
                                             @Html.DisplayFor(modelItem => item.ResponsibilityCoefficient)
                                         </td>
-                                        <td>
+                                        <td class="d-none d-lg-table-cell">
                                             @Html.DisplayFor(modelItem => item.PosiontConfficient)
                                         </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.DateIssued)
+                                        <td class="d-none d-md-table-cell">
+                                            @item.DateIssued.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td class="d-none d-xl-table-cell">
+                                            <span title="@Html.DisplayFor(modelItem => item.Description)">
+                                                @(item.Description?.Length > 30 ? item.Description.Substring(0, 30) + "..." : item.Description)
+                                            </span>
+                                        </td>
+                                        <td class="d-none d-xl-table-cell">
+                                            <span title="@Html.DisplayFor(modelItem => item.Note)">
+                                                @(item.Note?.Length > 30 ? item.Note.Substring(0, 30) + "..." : item.Note)
+                                            </span>
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Note)
-                                        </td>
-                                        <td>
-                                            <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                                            <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a> |
-                                            @if (item.Status == 1)
-                                            {
-                                                <a href="#" onclick="confirmDeactivate(@item.Id, '@item.Name')" class="text-warning">Hết hiệu lực</a>
-                                            }
+                                            <div class="btn-group-vertical btn-group-sm d-md-none" role="group">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+                                                @if (item.Status == 1)
+                                                {
+                                                    <a href="#" onclick="confirmDeactivate(@item.Id, '@item.Name')" class="btn btn-warning btn-sm">Hết HH</a>
+                                                }
+                                            </div>
+                                            <div class="d-none d-md-block">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xóa</a>
+                                                @if (item.Status == 1)
+                                                {
+                                                    <a href="#" onclick="confirmDeactivate(@item.Id, '@item.Name')" class="btn btn-sm btn-warning">Hết hiệu lực</a>
+                                                }
+                                            </div>
                                         </td>
                                     </tr>
                                 }

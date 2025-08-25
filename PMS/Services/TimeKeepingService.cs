@@ -22,6 +22,8 @@ namespace PMS.Services
             {
                 var response = new TimeKeepingResponse();
                 
+
+                // Lấy bảng gốc là bảng tblUsers với điều kiện là DateTime < Max time, và lấy distinct
                 // Lấy dữ liệu chấm công theo thời gian - LINQ method syntax
                 var timeKeepingQuery = _context.TblTimeKeepings
                     .Join(_context.TblUsers, tk => tk.UserId, u => u.Id, (tk, u) => new { tk, u })
